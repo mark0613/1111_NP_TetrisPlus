@@ -1,8 +1,11 @@
 from .components import *
 from .ui_tetris import Ui_TetrisWindow
+from src.game.tetris import Tetris
+from src.game.keyboard import KeyBuffer
 
 from PyQt5 import QtWidgets
 import xmlrpc.client
+import threading
 
 
 IP = "127.0.0.1"
@@ -90,3 +93,28 @@ class MenuPage(Ui_TetrisWindow):
 
     def on_button_rule_click(self, event):
         pass
+
+class SingleGamePage(Ui_TetrisWindow):
+    def play_game(self):
+        self.key_buffer = KeyBuffer()
+        self.condition = threading.Condition()
+        Tetris.set_key_buffer(self.key_buffer)
+        Tetris.set_condition(self.condition)
+        tetris = Tetris()
+        tetris.next_display_method = self.display_next_block
+        tetris.held_display_method = self.display_held_block
+        tetris.board_display_method = self.display_board_block
+        t = threading.Thread(target=tetris.play)
+        t.start()
+
+    def display_next_block(self, title, img):
+        qimg = cv2_to_qimage(img)
+        self.img_next_in_single.setPixmap(QPixmap.fromImage(qimg))
+
+    def display_held_block(self, title, img):
+        qimg = cv2_to_qimage(img)
+        self.img_held_in_single.setPixmap(QPixmap.fromImage(qimg))
+
+    def display_board_block(self, title, img):
+        qimg = cv2_to_qimage(img)
+        self.img_board_in_single.setPixmap(QPixmap.fromImage(qimg))

@@ -1,9 +1,11 @@
-from config import *
+from .config import *
+from .keyboard import KeyBuffer
 
 from enum import Enum
 import cv2
 import numpy as np
 import random
+import threading
 
 
 class PieceType(Enum):
@@ -56,7 +58,9 @@ class TetrisCommand(Enum):
         return TetrisCommand.OTHER
 
 class Tetris:
-    def __init__(self, ratio=20):
+    key_buffer = None
+    condition = None
+    def __init__(self, ratio: int=20):
         self.ratio = ratio
         self.score = 0
         self.piece_code = [piece for piece in PieceType]
@@ -81,6 +85,18 @@ class Tetris:
         self.current_piece = None
         self.held_piece = None
         self.next_piece = None
+
+        self.next_display_method = cv2.imshow
+        self.held_display_method = cv2.imshow
+        self.board_display_method = cv2.imshow
+
+    @classmethod
+    def set_key_buffer(cls, key_buffer: KeyBuffer):
+        Tetris.key_buffer = key_buffer
+
+    @classmethod
+    def set_condition(cls, condition: threading.Condition):
+        Tetris.condition = condition
 
     def get_random_piece_type(self) -> PieceType:
         return random.choice(self.piece_code)
@@ -128,17 +144,20 @@ class Tetris:
                 "title" : "Next",
                 "coords" : self.next_piece.coords,
                 "color" : self.next_piece.color.value,
+                "display_method" : self.next_display_method
             },
             "held" : {
                 "title" : "Held",
                 "coords" : self.held_piece.coords,
                 "color" : self.held_piece.color.value,
+                "display_method" : self.held_display_method
             },
             "board" : {
                 "title" : "Board",
                 "src" : self.board.copy(),
                 "coords" : self.current_piece.coords,
                 "color" : self.current_piece.color.value,
+                "display_method" : self.board_display_method
             },
         }
         return Tetris.displayWith(data_set, self.ratio)
@@ -153,12 +172,14 @@ class Tetris:
         dy = 2
         next = data_set["next"]
         next_coords, next_color = next["coords"], next["color"]
+        next_display_method = next["display_method"]
         next_block = np.zeros((size, size, 3), dtype=np.uint8)
         next_block[next_coords[:, 0] + dy, next_coords[:, 1] + dx] = next_color
         next_block = enlarge(next_block)
 
         held = data_set["held"]
         held_coords, held_color = held["coords"], held["color"]
+        held_display_method = held["display_method"]
         held_block = np.zeros((size, size, 3), dtype=np.uint8)
         held_block[held_coords[:, 0] + dy, held_coords[:, 1] + dx] = held_color
         held_block = enlarge(held_block)
@@ -166,13 +187,20 @@ class Tetris:
         board = data_set["board"]
         board_coords, board_color = board["coords"], board["color"]
         board_block = board["src"]
+        board_display_method = board["display_method"]
         board_block[board_coords[:, 0], board_coords[:, 1]] = board_color
         board_block = enlarge(board_block)
 
-        cv2.imshow(next["title"], next_block)
-        cv2.imshow(held["title"], held_block)
-        cv2.imshow(board["title"], board_block)
-        return cv2.waitKey(400)
+        next_display_method(next["title"], next_block)
+        held_display_method(held["title"], held_block)
+        board_display_method(board["title"], board_block)
+
+        with Tetris.condition:
+            Tetris.condition.wait(0.4)
+        key = Tetris.key_buffer.get()
+        print(key)
+        return key
+        # return cv2.waitKey(400)
 
     def on_listen_key(self, key: int):
         coords = self.current_piece.coords
