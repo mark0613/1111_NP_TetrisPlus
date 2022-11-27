@@ -8,6 +8,7 @@ PAGE_CLASSES = [
     RegisterPage,
     LoginPage, 
     MenuPage,
+    SinglePage,
     SingleGamePage,
 ]
 
@@ -23,6 +24,7 @@ class MainWindow(QtWidgets.QMainWindow, *PAGE_CLASSES):
         RegisterPage.bind(self)
         LoginPage.bind(self)
         MenuPage.bind(self)
+        SinglePage.bind(self)
 
     def keyPressEvent(self, event) -> None:
         key = event.text()

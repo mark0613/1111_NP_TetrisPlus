@@ -237,6 +237,13 @@ class Ui_TetrisWindow(object):
         font.setPointSize(20)
         self.button_settings.setFont(font)
         self.button_settings.setObjectName("button_settings")
+        self.button_back_to_menu = QtWidgets.QPushButton(self.page_single)
+        self.button_back_to_menu.setGeometry(QtCore.QRect(0, 490, 71, 61))
+        font = QtGui.QFont()
+        font.setFamily("Microsoft JhengHei")
+        font.setPointSize(20)
+        self.button_back_to_menu.setFont(font)
+        self.button_back_to_menu.setObjectName("button_back_to_menu")
         self.pages.addWidget(self.page_single)
         self.page_settings = QtWidgets.QWidget()
         self.page_settings.setObjectName("page_settings")
@@ -362,7 +369,7 @@ class Ui_TetrisWindow(object):
         TetrisWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(TetrisWindow)
-        self.pages.setCurrentIndex(2)
+        self.pages.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(TetrisWindow)
 
     def retranslateUi(self, TetrisWindow):
@@ -389,6 +396,7 @@ class Ui_TetrisWindow(object):
         self.title_single.setText(_translate("TetrisWindow", "單人"))
         self.button_start.setText(_translate("TetrisWindow", "開始遊戲"))
         self.button_settings.setText(_translate("TetrisWindow", "遊戲設置"))
+        self.button_back_to_menu.setText(_translate("TetrisWindow", "<"))
         self.title_settings.setText(_translate("TetrisWindow", "遊戲設置"))
         self.select_mode.setItemText(0, _translate("TetrisWindow", "計時(120s)"))
         self.select_mode.setItemText(1, _translate("TetrisWindow", "Zen"))

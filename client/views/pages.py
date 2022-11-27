@@ -94,6 +94,22 @@ class MenuPage(Ui_TetrisWindow):
     def on_button_rule_click(self, event):
         pass
 
+class SinglePage(Ui_TetrisWindow):
+    def bind(self):
+        self.button_start.mousePressEvent = self.on_button_start_click
+        self.button_settings.mousePressEvent = self.on_button_settings_click
+        self.button_back_to_menu.mousePressEvent = self.on_button_back_to_menu_click
+
+    def on_button_start_click(self, event):
+        change_page(self.pages, "page_single_game")
+        self.play_game()
+
+    def on_button_settings_click(self, event):
+        change_page(self.pages, "page_settings")
+
+    def on_button_back_to_menu_click(self, event):
+        change_page(self.pages, "page_menu")
+
 class SingleGamePage(Ui_TetrisWindow):
     def play_game(self):
         self.key_buffer = KeyBuffer()
