@@ -9,7 +9,11 @@ PAGE_CLASSES = [
     LoginPage, 
     MenuPage,
     SinglePage,
+    SettingsPage,
     SingleGamePage,
+]
+GAMING_PAGE = [
+    "page_single_game",
 ]
 
 class MainWindow(QtWidgets.QMainWindow, *PAGE_CLASSES):
@@ -25,9 +29,12 @@ class MainWindow(QtWidgets.QMainWindow, *PAGE_CLASSES):
         LoginPage.bind(self)
         MenuPage.bind(self)
         SinglePage.bind(self)
+        SettingsPage.bind(self)
 
     def keyPressEvent(self, event) -> None:
         key = event.text()
+        if self.pages.currentWidget().objectName() not in GAMING_PAGE:
+            return
         try:
             key = ord(key)
         except TypeError:

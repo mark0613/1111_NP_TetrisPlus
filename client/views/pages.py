@@ -2,6 +2,7 @@ from .components import *
 from .ui_tetris import Ui_TetrisWindow
 from src.game.tetris import Tetris
 from src.game.keyboard import KeyBuffer
+from src.utils.file import *
 
 from PyQt5 import QtWidgets
 import xmlrpc.client
@@ -109,6 +110,25 @@ class SinglePage(Ui_TetrisWindow):
 
     def on_button_back_to_menu_click(self, event):
         change_page(self.pages, "page_menu")
+
+class SettingsPage(Ui_TetrisWindow):
+    def bind(self):
+        self.button_save_settings.mousePressEvent = self.on_button_save_settings_click
+        self.button_back_to_single.mousePressEvent = self.on_button_back_to_single_click
+
+    def on_button_save_settings_click(self, event):
+        mode = self.select_mode.currentText()
+        speed = self.select_speed.currentText()
+        config = {
+            "mode" : mode,
+            "speed" : speed,
+        }
+        dumpJsonFile(config, "client/.local/config.json")
+        open_window("儲存成功!")
+        change_page(self.pages, "page_single")
+    
+    def on_button_back_to_single_click(self, event):
+        change_page(self.pages, "page_single")
 
 class SingleGamePage(Ui_TetrisWindow):
     def play_game(self):
