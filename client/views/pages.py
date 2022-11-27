@@ -71,3 +71,22 @@ class LoginPage(Ui_TetrisWindow):
 
     def on_link_to_register_click(self, event):
         change_page(self.pages, "page_register")
+
+class MenuPage(Ui_TetrisWindow):
+    def bind(self):
+        self.button_single_mode.mousePressEvent = self.on_button_single_mode_click
+        self.button_connection_mode.mousePressEvent = self.on_button_connection_mode_click
+        self.button_rank.mousePressEvent = self.on_button_rank_click
+        self.button_rule.mousePressEvent = self.on_button_rule_click
+
+    def on_button_single_mode_click(self, event):
+        change_page(self.pages, "page_single")
+
+    def on_button_connection_mode_click(self, event):
+        pass
+    
+    def on_button_rank_click(self, event):
+        pass
+
+    def on_button_rule_click(self, event):
+        pass

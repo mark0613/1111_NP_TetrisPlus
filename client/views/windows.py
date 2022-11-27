@@ -2,8 +2,13 @@ from .pages import *
 
 from PyQt5 import QtWidgets
 
-
-class MainWindow(QtWidgets.QMainWindow, MainPage, RegisterPage, LoginPage):
+PAGE_CLASSES = [
+    MainPage,
+    RegisterPage,
+    LoginPage, 
+    MenuPage,
+]
+class MainWindow(QtWidgets.QMainWindow, *PAGE_CLASSES):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
@@ -14,3 +19,4 @@ class MainWindow(QtWidgets.QMainWindow, MainPage, RegisterPage, LoginPage):
         MainPage.bind(self)
         RegisterPage.bind(self)
         LoginPage.bind(self)
+        MenuPage.bind(self)
