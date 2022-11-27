@@ -54,5 +54,20 @@ class RegisterPage(Ui_TetrisWindow):
     def on_link_to_login_click(self, event):
         change_page(self.pages, "page_login")
 
-    def show(self):
+class LoginPage(Ui_TetrisWindow):
+    def bind(self):
+        self.button_login.mousePressEvent = self.on_button_login_click
+        self.link_to_register.mousePressEvent = self.on_link_to_register_click
+
+    def on_button_login_click(self, event):
+        username = self.input_username_in_login.text()
+        password = self.input_password_in_login.text()
+        if SERVER.login(username, password):
+            open_window("登入成功!")
+            self.username = username
+            change_page(self.pages, "page_menu")
+        else:
+            open_window("帳號或密碼錯誤!")
+
+    def on_link_to_register_click(self, event):
         change_page(self.pages, "page_register")
