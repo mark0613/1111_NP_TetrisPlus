@@ -21,6 +21,11 @@ page_map = {
     "page_single" : 4,
     "page_settings" : 5,
     "page_single_game" : 6,
+    "page_connection_room" : 7,
+    "page_connection_game" : 8,
+    "page_connection_end" : 9,
+    "page_rank" : 10,
+    "page_rule" : 11,
 }
 def change_page(pages: QtWidgets.QStackedWidget, page_name: str):
     index = page_map[page_name]
@@ -87,19 +92,20 @@ class MenuPage(Ui_TetrisWindow):
         change_page(self.pages, "page_single")
 
     def on_button_connection_mode_click(self, event):
-        pass
+        change_page(self.pages, "page_connection_room")
+        # TODO: pair
     
     def on_button_rank_click(self, event):
-        pass
+        change_page(self.pages, "page_rank")
 
     def on_button_rule_click(self, event):
-        pass
+        change_page(self.pages, "page_rule")
 
 class SinglePage(Ui_TetrisWindow):
     def bind(self):
         self.button_start.mousePressEvent = self.on_button_start_click
         self.button_settings.mousePressEvent = self.on_button_settings_click
-        self.button_back_to_menu.mousePressEvent = self.on_button_back_to_menu_click
+        self.button_back_to_menu_in_single.mousePressEvent = self.on_button_back_to_menu_click
 
     def on_button_start_click(self, event):
         change_page(self.pages, "page_single_game")
@@ -154,3 +160,25 @@ class SingleGamePage(Ui_TetrisWindow):
     def display_board_block(self, title, img):
         qimg = cv2_to_qimage(img)
         self.img_board_in_single.setPixmap(QPixmap.fromImage(qimg))
+
+class RoomPage(Ui_TetrisWindow):
+    def bind(self):
+        self.button_back_to_menu_in_room.mousePressEvent = self.on_button_back_to_menu_click
+
+class ConnectionGamePage(Ui_TetrisWindow):
+    # TODO: socket connect two player and show board
+    pass
+
+class EndPage(Ui_TetrisWindow):
+    def bind(self):
+        self.button_to_rank_in_end.mousePressEvent = self.on_button_rank_click
+
+class RankPage(Ui_TetrisWindow):
+    def bind(self):
+        self.button_back_to_menu_in_rank.mousePressEvent = self.on_button_back_to_menu_click
+        # TODO: show rank info
+
+class RulePage(Ui_TetrisWindow):
+    def bind(self):
+        self.button_back_to_menu_in_rule.mousePressEvent = self.on_button_back_to_menu_click
+        # TODO: show rule

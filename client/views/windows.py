@@ -11,6 +11,11 @@ PAGE_CLASSES = [
     SinglePage,
     SettingsPage,
     SingleGamePage,
+    RoomPage,
+    ConnectionGamePage,
+    EndPage,
+    RankPage,
+    RulePage,
 ]
 GAMING_PAGE = [
     "page_single_game",
@@ -30,6 +35,10 @@ class MainWindow(QtWidgets.QMainWindow, *PAGE_CLASSES):
         MenuPage.bind(self)
         SinglePage.bind(self)
         SettingsPage.bind(self)
+        RoomPage.bind(self)
+        EndPage.bind(self)
+        RankPage.bind(self)
+        RulePage.bind(self)
 
     def keyPressEvent(self, event) -> None:
         key = event.text()
