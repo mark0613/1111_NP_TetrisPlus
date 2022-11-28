@@ -23,3 +23,46 @@ class UserService:
         if user_data == None:
             return False
         return user_data.password == user.password
+
+class RoomListService:
+    room_list_dao = RoomListDao()
+
+    def create_room(self, user):
+        if self.user_in_room(user):
+            return (False, None)
+        room_id = self.room_list_dao.create(user)
+        return (True, room_id)
+    
+    def destroy_room(self, room_id):
+        if self.room_is_exist(room_id):
+            self.room_list_dao.destroy(room_id)
+            return True
+        return False
+    
+    def add_room(self, room_id, user):
+        if self.user_in_room(user):
+            return False
+        if not self.room_is_exist(room_id):
+            return False
+        self.room_list_dao.add(room_id, user)
+        return True
+    
+    def quit_room(self, user):
+        if self.user_in_room(user):
+            self.room_list_dao.quit(user)
+            return True
+        return False
+    
+    def room_is_exist(self, room_id):
+        return self.room_list_dao.room_is_exist(room_id)
+    
+    def user_in_room(self, user):
+        return self.room_list_dao.user_in_room(user)
+
+    def get_room_members(self, room_id):
+        if self.room_is_exist(room_id):
+            return self.room_list_dao.get_room_members(room_id)
+        return None
+    
+    def get_all_rooms(self):
+        return self.room_list_dao.get_all()
