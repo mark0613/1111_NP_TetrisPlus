@@ -8,7 +8,7 @@ from socketserver import ThreadingMixIn
 class ThreadXMLRPCServer(ThreadingMixIn, SimpleXMLRPCServer):
 	pass
 
-class AllInstances(UserInstance):
+class AllInstances(UserInstance, RoomListInstance):
     pass
 
 
