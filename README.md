@@ -6,7 +6,7 @@
 3. 建立虛擬環境
    - `python3 -m venv venv`
 4. 進入虛擬環境(指令視作業系統而定)
-   - Windows：`venv/Scripts/activate`
+   - Windows：`venv\Scripts\activate`
    - Linux/MacOS：`source ./venv/bin/activate`
 5. `pip install -r requirements.txt`
 
