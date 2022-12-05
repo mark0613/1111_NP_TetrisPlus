@@ -13,7 +13,13 @@
   <property name="windowTitle">
    <string>TetrisWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(0, 0, 0);</string>
+  </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
    <widget class="QStackedWidget" name="pages">
     <property name="geometry">
      <rect>
@@ -23,16 +29,113 @@
       <height>551</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>12</number>
     </property>
     <widget class="QWidget" name="page_main">
+     <property name="palette">
+      <palette>
+       <active>
+        <colorrole role="Button">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Base">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Window">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </active>
+       <inactive>
+        <colorrole role="Button">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Base">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Window">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </inactive>
+       <disabled>
+        <colorrole role="Button">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Base">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+        <colorrole role="Window">
+         <brush brushstyle="SolidPattern">
+          <color alpha="255">
+           <red>0</red>
+           <green>0</green>
+           <blue>0</blue>
+          </color>
+         </brush>
+        </colorrole>
+       </disabled>
+      </palette>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
      <widget class="QLabel" name="title_trteis_plus_1">
       <property name="geometry">
        <rect>
-        <x>160</x>
-        <y>50</y>
-        <width>481</width>
+        <x>20</x>
+        <y>70</y>
+        <width>761</width>
         <height>81</height>
        </rect>
       </property>
@@ -44,6 +147,9 @@
         <bold>true</bold>
         <underline>false</underline>
        </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 255, 255);</string>
       </property>
       <property name="text">
        <string>Tetris Plus</string>
@@ -67,6 +173,10 @@
         <pointsize>20</pointsize>
        </font>
       </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(180, 217, 217);
+border-radius: 7px;</string>
+      </property>
       <property name="text">
        <string>登入</string>
       </property>
@@ -86,6 +196,10 @@
         <pointsize>20</pointsize>
        </font>
       </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 238, 153);
+border-radius: 7px;</string>
+      </property>
       <property name="text">
        <string>註冊</string>
       </property>
@@ -96,19 +210,23 @@
       <property name="geometry">
        <rect>
         <x>150</x>
-        <y>50</y>
+        <y>70</y>
         <width>481</width>
         <height>81</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <family>Consolas</family>
+        <family>Microsoft JhengHei</family>
         <pointsize>40</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-        <underline>false</underline>
+        <weight>3</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 255, 255);
+font: 25 40pt &quot;Microsoft JhengHei&quot;;</string>
       </property>
       <property name="text">
        <string>註冊</string>
@@ -128,9 +246,16 @@
       </property>
       <property name="font">
        <font>
-        <family>Consolas</family>
-        <pointsize>20</pointsize>
+        <family>Microsoft JhengHei</family>
+        <pointsize>15</pointsize>
+        <weight>3</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 25 15pt &quot;Microsoft JhengHei&quot;;
+color: rgb(255, 255, 255);</string>
       </property>
       <property name="text">
        <string/>
@@ -151,11 +276,17 @@
         <pointsize>20</pointsize>
        </font>
       </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 255, 255);</string>
+      </property>
       <property name="text">
        <string>Username :</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_password_in_register">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>120</x>
@@ -169,6 +300,9 @@
         <family>Consolas</family>
         <pointsize>20</pointsize>
        </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 255, 255);</string>
       </property>
       <property name="text">
        <string>Password :</string>
@@ -185,9 +319,16 @@
       </property>
       <property name="font">
        <font>
-        <family>Consolas</family>
-        <pointsize>20</pointsize>
+        <family>Microsoft JhengHei</family>
+        <pointsize>15</pointsize>
+        <weight>3</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 25 15pt &quot;Microsoft JhengHei&quot;;
+color: rgb(255, 255, 255);</string>
       </property>
       <property name="text">
        <string/>
@@ -211,6 +352,10 @@
         <pointsize>20</pointsize>
        </font>
       </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 179, 179);
+border-radius: 7px;</string>
+      </property>
       <property name="text">
        <string>註冊</string>
       </property>
@@ -231,6 +376,9 @@
         <underline>true</underline>
        </font>
       </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 255, 255);</string>
+      </property>
       <property name="text">
        <string>已經有帳號? 登入</string>
       </property>
@@ -241,19 +389,23 @@
       <property name="geometry">
        <rect>
         <x>150</x>
-        <y>40</y>
+        <y>70</y>
         <width>481</width>
         <height>81</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <family>Consolas</family>
+        <family>Microsoft JhengHei</family>
         <pointsize>40</pointsize>
-        <weight>75</weight>
-        <bold>true</bold>
-        <underline>false</underline>
+        <weight>3</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 255, 255);
+font: 25 40pt &quot;Microsoft JhengHei&quot;;</string>
       </property>
       <property name="text">
        <string>登入</string>
@@ -265,8 +417,8 @@
      <widget class="QPushButton" name="button_login">
       <property name="geometry">
        <rect>
-        <x>280</x>
-        <y>430</y>
+        <x>270</x>
+        <y>410</y>
         <width>251</width>
         <height>61</height>
        </rect>
@@ -277,6 +429,10 @@
         <pointsize>20</pointsize>
        </font>
       </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 179, 179);
+border-radius: 7px;</string>
+      </property>
       <property name="text">
        <string>登入</string>
       </property>
@@ -284,8 +440,8 @@
      <widget class="QLabel" name="label_password_in_login">
       <property name="geometry">
        <rect>
-        <x>130</x>
-        <y>320</y>
+        <x>120</x>
+        <y>300</y>
         <width>191</width>
         <height>51</height>
        </rect>
@@ -295,6 +451,9 @@
         <family>Consolas</family>
         <pointsize>20</pointsize>
        </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 255, 255);</string>
       </property>
       <property name="text">
        <string>Password :</string>
@@ -303,8 +462,8 @@
      <widget class="QLabel" name="label_username_in_login">
       <property name="geometry">
        <rect>
-        <x>130</x>
-        <y>230</y>
+        <x>120</x>
+        <y>210</y>
         <width>191</width>
         <height>51</height>
        </rect>
@@ -315,6 +474,9 @@
         <pointsize>20</pointsize>
        </font>
       </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 255, 255);</string>
+      </property>
       <property name="text">
        <string>Username :</string>
       </property>
@@ -322,17 +484,24 @@
      <widget class="QLineEdit" name="input_username_in_login">
       <property name="geometry">
        <rect>
-        <x>350</x>
-        <y>230</y>
+        <x>340</x>
+        <y>210</y>
         <width>361</width>
         <height>51</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <family>Consolas</family>
-        <pointsize>20</pointsize>
+        <family>Microsoft JhengHei</family>
+        <pointsize>15</pointsize>
+        <weight>3</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 25 15pt &quot;Microsoft JhengHei&quot;;
+color: rgb(255, 255, 255);</string>
       </property>
       <property name="text">
        <string/>
@@ -341,17 +510,24 @@
      <widget class="QLineEdit" name="input_password_in_login">
       <property name="geometry">
        <rect>
-        <x>350</x>
-        <y>320</y>
+        <x>340</x>
+        <y>300</y>
         <width>361</width>
         <height>51</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <family>Consolas</family>
-        <pointsize>20</pointsize>
+        <family>Microsoft JhengHei</family>
+        <pointsize>15</pointsize>
+        <weight>3</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">font: 25 15pt &quot;Microsoft JhengHei&quot;;
+color: rgb(255, 255, 255);</string>
       </property>
       <property name="text">
        <string/>
@@ -363,8 +539,8 @@
      <widget class="QPushButton" name="link_to_register">
       <property name="geometry">
        <rect>
-        <x>240</x>
-        <y>500</y>
+        <x>230</x>
+        <y>490</y>
         <width>331</width>
         <height>41</height>
        </rect>
@@ -376,16 +552,22 @@
         <underline>true</underline>
        </font>
       </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 255, 255);</string>
+      </property>
       <property name="text">
        <string>還沒註冊? 註冊</string>
       </property>
      </widget>
     </widget>
     <widget class="QWidget" name="page_menu">
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(0, 0, 0);</string>
+     </property>
      <widget class="QPushButton" name="button_single_mode">
       <property name="geometry">
        <rect>
-        <x>250</x>
+        <x>270</x>
         <y>210</y>
         <width>251</width>
         <height>61</height>
@@ -397,6 +579,10 @@
         <pointsize>20</pointsize>
        </font>
       </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 179, 179);
+border-radius: 7px;</string>
+      </property>
       <property name="text">
        <string>單人模式</string>
       </property>
@@ -404,9 +590,9 @@
      <widget class="QLabel" name="title_trteis_plus">
       <property name="geometry">
        <rect>
-        <x>140</x>
-        <y>50</y>
-        <width>481</width>
+        <x>20</x>
+        <y>70</y>
+        <width>761</width>
         <height>81</height>
        </rect>
       </property>
@@ -419,6 +605,9 @@
         <underline>false</underline>
        </font>
       </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 255, 255);</string>
+      </property>
       <property name="text">
        <string>Tetris Plus</string>
       </property>
@@ -429,7 +618,7 @@
      <widget class="QPushButton" name="button_connection_mode">
       <property name="geometry">
        <rect>
-        <x>250</x>
+        <x>270</x>
         <y>290</y>
         <width>251</width>
         <height>61</height>
@@ -441,6 +630,10 @@
         <pointsize>20</pointsize>
        </font>
       </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(180, 217, 217);
+border-radius: 7px;</string>
+      </property>
       <property name="text">
        <string>雙人連線</string>
       </property>
@@ -448,7 +641,7 @@
      <widget class="QPushButton" name="button_rank">
       <property name="geometry">
        <rect>
-        <x>250</x>
+        <x>270</x>
         <y>370</y>
         <width>251</width>
         <height>61</height>
@@ -460,6 +653,10 @@
         <pointsize>20</pointsize>
        </font>
       </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 238, 153);
+border-radius: 7px;</string>
+      </property>
       <property name="text">
        <string>排行榜</string>
       </property>
@@ -467,7 +664,7 @@
      <widget class="QPushButton" name="button_rule">
       <property name="geometry">
        <rect>
-        <x>250</x>
+        <x>270</x>
         <y>450</y>
         <width>251</width>
         <height>61</height>
@@ -478,6 +675,10 @@
         <family>Microsoft JhengHei</family>
         <pointsize>20</pointsize>
        </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(219, 179, 255);
+border-radius: 7px;</string>
       </property>
       <property name="text">
        <string>遊戲規則</string>
@@ -503,6 +704,9 @@
         <underline>false</underline>
        </font>
       </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 255, 255);</string>
+      </property>
       <property name="text">
        <string>單人</string>
       </property>
@@ -513,7 +717,7 @@
      <widget class="QPushButton" name="button_start">
       <property name="geometry">
        <rect>
-        <x>260</x>
+        <x>270</x>
         <y>270</y>
         <width>251</width>
         <height>61</height>
@@ -525,6 +729,10 @@
         <pointsize>20</pointsize>
        </font>
       </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 238, 153);
+border-radius: 7px;</string>
+      </property>
       <property name="text">
        <string>開始遊戲</string>
       </property>
@@ -532,7 +740,7 @@
      <widget class="QPushButton" name="button_settings">
       <property name="geometry">
        <rect>
-        <x>260</x>
+        <x>270</x>
         <y>370</y>
         <width>251</width>
         <height>61</height>
@@ -543,6 +751,10 @@
         <family>Microsoft JhengHei</family>
         <pointsize>20</pointsize>
        </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(219, 179, 255);
+border-radius: 7px;</string>
       </property>
       <property name="text">
        <string>遊戲設置</string>
@@ -563,6 +775,9 @@
         <pointsize>20</pointsize>
        </font>
       </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 255, 255);</string>
+      </property>
       <property name="text">
        <string>&lt;</string>
       </property>
@@ -572,20 +787,23 @@
      <widget class="QLabel" name="title_settings">
       <property name="geometry">
        <rect>
-        <x>140</x>
-        <y>30</y>
+        <x>150</x>
+        <y>60</y>
         <width>481</width>
         <height>81</height>
        </rect>
       </property>
       <property name="font">
        <font>
-        <family>Consolas</family>
+        <family>Microsoft JhengHei</family>
         <pointsize>40</pointsize>
         <weight>75</weight>
         <bold>true</bold>
         <underline>false</underline>
        </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 255, 255);</string>
       </property>
       <property name="text">
        <string>遊戲設置</string>
@@ -597,7 +815,7 @@
      <widget class="QComboBox" name="select_mode">
       <property name="geometry">
        <rect>
-        <x>110</x>
+        <x>130</x>
         <y>250</y>
         <width>221</width>
         <height>41</height>
@@ -609,21 +827,30 @@
         <pointsize>20</pointsize>
        </font>
       </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 255);
+selection-background-color: rgb(255, 238, 153);
+selection-color: rgb(0, 0, 0);
+border-radius: 7px;</string>
+      </property>
+      <property name="currentText">
+       <string>  計時(120s)</string>
+      </property>
       <item>
        <property name="text">
-        <string>計時(120s)</string>
+        <string>  計時(120s)</string>
        </property>
       </item>
       <item>
        <property name="text">
-        <string>Zen</string>
+        <string>  Zen</string>
        </property>
       </item>
      </widget>
      <widget class="QComboBox" name="select_speed">
       <property name="geometry">
        <rect>
-        <x>400</x>
+        <x>420</x>
         <y>250</y>
         <width>221</width>
         <height>41</height>
@@ -635,31 +862,37 @@
         <pointsize>20</pointsize>
        </font>
       </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 255, 255);
+selection-background-color: rgb(255, 238, 153);
+selection-color: rgb(0, 0, 0);
+border-radius: 7px;</string>
+      </property>
       <item>
        <property name="text">
-        <string>簡單</string>
+        <string>  簡 單</string>
        </property>
       </item>
       <item>
        <property name="text">
-        <string>正常</string>
+        <string>  正 常</string>
        </property>
       </item>
       <item>
        <property name="text">
-        <string>困難</string>
+        <string>  困 難</string>
        </property>
       </item>
       <item>
        <property name="text">
-        <string>專家</string>
+        <string>  專 家</string>
        </property>
       </item>
      </widget>
      <widget class="QPushButton" name="button_save_settings">
       <property name="geometry">
        <rect>
-        <x>250</x>
+        <x>270</x>
         <y>370</y>
         <width>251</width>
         <height>61</height>
@@ -670,6 +903,10 @@
         <family>Microsoft JhengHei</family>
         <pointsize>20</pointsize>
        </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 179, 179);
+border-radius: 7px;</string>
       </property>
       <property name="text">
        <string>儲存</string>
@@ -689,6 +926,9 @@
         <family>Microsoft JhengHei</family>
         <pointsize>20</pointsize>
        </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color: rgb(255, 255, 255);</string>
       </property>
       <property name="text">
        <string>&lt;</string>
@@ -1431,6 +1671,54 @@
       </property>
      </widget>
     </widget>
+    <widget class="QWidget" name="page_room_list">
+     <widget class="QPushButton" name="button_create_room">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>430</y>
+        <width>251</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Microsoft JhengHei</family>
+        <pointsize>20</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(255, 179, 179);
+border-radius: 7px;</string>
+      </property>
+      <property name="text">
+       <string>創建房間</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="button_add_into_room">
+      <property name="geometry">
+       <rect>
+        <x>440</x>
+        <y>430</y>
+        <width>251</width>
+        <height>61</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Microsoft JhengHei</family>
+        <pointsize>20</pointsize>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(180, 217, 217);
+border-radius: 7px;</string>
+      </property>
+      <property name="text">
+       <string>加入</string>
+      </property>
+     </widget>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -1439,7 +1727,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>25</height>
+     <height>18</height>
     </rect>
    </property>
   </widget>
