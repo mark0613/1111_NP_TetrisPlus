@@ -827,31 +827,59 @@ class Ui_TetrisWindow(object):
         self.page_rank = QtWidgets.QWidget()
         self.page_rank.setObjectName("page_rank")
         self.ranks = QtWidgets.QTabWidget(self.page_rank)
-        self.ranks.setGeometry(QtCore.QRect(4, 49, 791, 501))
+        self.ranks.setGeometry(QtCore.QRect(24, 39, 751, 511))
+        self.ranks.setStyleSheet("QTabWidget::pane {\n"
+"  border: 1px solid lightgray;\n"
+"  top:-1px; \n"
+"  background: rgb(245, 245, 245);\n"
+"    \n"
+"} \n"
+"\n"
+"QTabBar::tab {\n"
+"    background: rgb(245, 245, 245);\n"
+"  border: 1px solid lightgray; \n"
+"  padding: 15px;\n"
+"font: 10pt \"Microsoft JhengHei\";\n"
+"} \n"
+"\n"
+"QTabBar::tab:selected { \n"
+"   \n"
+"background: rgb(180, 217, 217);\n"
+"  margin-bottom: -1px; \n"
+"}")
         self.ranks.setObjectName("ranks")
         self.tab_single_rank = QtWidgets.QWidget()
         self.tab_single_rank.setObjectName("tab_single_rank")
         self.label_single_rank = QtWidgets.QLabel(self.tab_single_rank)
-        self.label_single_rank.setGeometry(QtCore.QRect(200, 20, 341, 81))
+        self.label_single_rank.setGeometry(QtCore.QRect(220, 10, 311, 61))
         font = QtGui.QFont()
-        font.setFamily("Consolas")
-        font.setPointSize(30)
-        font.setBold(True)
-        font.setWeight(75)
+        font.setFamily("Microsoft JhengHei")
+        font.setPointSize(25)
+        font.setBold(False)
+        font.setItalic(False)
+        font.setWeight(50)
         self.label_single_rank.setFont(font)
+        self.label_single_rank.setStyleSheet("color: rgb(255, 255, 255);\n"
+"font: 25pt \"Microsoft JhengHei\";")
         self.label_single_rank.setAlignment(QtCore.Qt.AlignCenter)
         self.label_single_rank.setObjectName("label_single_rank")
         self.ranks.addTab(self.tab_single_rank, "")
         self.tab_connection_rank = QtWidgets.QWidget()
+        font = QtGui.QFont()
+        font.setFamily("Microsoft JhengHei")
+        self.tab_connection_rank.setFont(font)
         self.tab_connection_rank.setObjectName("tab_connection_rank")
         self.label_connection_rank = QtWidgets.QLabel(self.tab_connection_rank)
-        self.label_connection_rank.setGeometry(QtCore.QRect(210, 20, 341, 81))
+        self.label_connection_rank.setGeometry(QtCore.QRect(220, 10, 311, 61))
         font = QtGui.QFont()
-        font.setFamily("Consolas")
-        font.setPointSize(30)
-        font.setBold(True)
-        font.setWeight(75)
+        font.setFamily("Microsoft JhengHei")
+        font.setPointSize(25)
+        font.setBold(False)
+        font.setItalic(False)
+        font.setWeight(50)
         self.label_connection_rank.setFont(font)
+        self.label_connection_rank.setStyleSheet("color: rgb(255, 255, 255);\n"
+"font: 25pt \"Microsoft JhengHei\";")
         self.label_connection_rank.setAlignment(QtCore.Qt.AlignCenter)
         self.label_connection_rank.setObjectName("label_connection_rank")
         self.ranks.addTab(self.tab_connection_rank, "")
@@ -861,6 +889,9 @@ class Ui_TetrisWindow(object):
         font.setFamily("Microsoft JhengHei")
         font.setPointSize(20)
         self.button_back_to_menu_in_rank.setFont(font)
+        self.button_back_to_menu_in_rank.setText("")
+        self.button_back_to_menu_in_rank.setIcon(icon)
+        self.button_back_to_menu_in_rank.setIconSize(QtCore.QSize(30, 30))
         self.button_back_to_menu_in_rank.setObjectName("button_back_to_menu_in_rank")
         self.pages.addWidget(self.page_rank)
         self.page_rule = QtWidgets.QWidget()
@@ -868,12 +899,14 @@ class Ui_TetrisWindow(object):
         self.title_rule = QtWidgets.QLabel(self.page_rule)
         self.title_rule.setGeometry(QtCore.QRect(150, 30, 481, 81))
         font = QtGui.QFont()
-        font.setFamily("Consolas")
-        font.setPointSize(40)
-        font.setBold(True)
-        font.setUnderline(False)
-        font.setWeight(75)
+        font.setFamily("Microsoft JhengHei")
+        font.setPointSize(25)
+        font.setBold(False)
+        font.setItalic(False)
+        font.setWeight(50)
         self.title_rule.setFont(font)
+        self.title_rule.setStyleSheet("color: rgb(255, 255, 255);\n"
+"font: 25pt \"Microsoft JhengHei\";")
         self.title_rule.setAlignment(QtCore.Qt.AlignCenter)
         self.title_rule.setObjectName("title_rule")
         self.button_back_to_menu_in_rule = QtWidgets.QPushButton(self.page_rule)
@@ -882,6 +915,7 @@ class Ui_TetrisWindow(object):
         font.setFamily("Microsoft JhengHei")
         font.setPointSize(20)
         self.button_back_to_menu_in_rule.setFont(font)
+        self.button_back_to_menu_in_rule.setStyleSheet("color: rgb(255, 255, 255);")
         self.button_back_to_menu_in_rule.setObjectName("button_back_to_menu_in_rule")
         self.pages.addWidget(self.page_rule)
         self.page_room_list = QtWidgets.QWidget()
@@ -924,7 +958,7 @@ class Ui_TetrisWindow(object):
 
         self.retranslateUi(TetrisWindow)
         self.pages.setCurrentIndex(0)
-        self.ranks.setCurrentIndex(1)
+        self.ranks.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(TetrisWindow)
 
     def retranslateUi(self, TetrisWindow):
@@ -989,7 +1023,6 @@ class Ui_TetrisWindow(object):
         self.ranks.setTabText(self.ranks.indexOf(self.tab_single_rank), _translate("TetrisWindow", "個人"))
         self.label_connection_rank.setText(_translate("TetrisWindow", "對戰排行榜"))
         self.ranks.setTabText(self.ranks.indexOf(self.tab_connection_rank), _translate("TetrisWindow", "對戰"))
-        self.button_back_to_menu_in_rank.setText(_translate("TetrisWindow", "M"))
         self.title_rule.setText(_translate("TetrisWindow", "遊戲規則"))
         self.button_back_to_menu_in_rule.setText(_translate("TetrisWindow", "<"))
         self.button_create_room.setText(_translate("TetrisWindow", "創建房間"))
