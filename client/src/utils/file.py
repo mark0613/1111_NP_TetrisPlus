@@ -11,4 +11,4 @@ def load_json_file(path):
 
 def dump_json_file(data, path):
     with open(path, "w", encoding="utf-8") as file:
-        json.dump(data, file, ensure_ascii=False)
+        json.dump(data, file, ensure_ascii=False , indent=4)
