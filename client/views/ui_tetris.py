@@ -931,6 +931,9 @@ class Ui_TetrisWindow(object):
         self.button_create_room.setObjectName("button_create_room")
         self.list_room_list = QtWidgets.QListWidget(self.page_room_list)
         self.list_room_list.setGeometry(QtCore.QRect(30, 110, 741, 341))
+        self.list_room_list.setStyleSheet("QListWidget {\n"
+"    background-color: #fff;\n"
+"}")
         self.list_room_list.setObjectName("list_room_list")
         self.label_room_list = QtWidgets.QLabel(self.page_room_list)
         self.label_room_list.setGeometry(QtCore.QRect(270, 40, 241, 51))

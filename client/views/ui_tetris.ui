@@ -2121,6 +2121,11 @@ border-radius: 7px;</string>
         <height>341</height>
        </rect>
       </property>
+      <property name="styleSheet">
+       <string notr="true">QListWidget {
+	background-color: #fff;
+}</string>
+      </property>
      </widget>
      <widget class="QLabel" name="label_room_list">
       <property name="geometry">
