@@ -3,6 +3,7 @@ from .ui_tetris import Ui_TetrisWindow
 from src.game.tetris import Tetris
 from src.game.keyboard import KeyBuffer
 from src.utils.file import *
+from src.utils.config import *
 
 from PyQt5 import QtWidgets
 import xmlrpc.client
@@ -121,15 +122,19 @@ class SettingsPage(Ui_TetrisWindow):
     def bind(self):
         self.button_save_settings.mousePressEvent = self.on_button_save_settings_click
         self.button_back_to_single.mousePressEvent = self.on_button_back_to_single_click
+        mode = [(False, "  計時(120s)"), (True, "  Zen")]
+        speed = [(1, "  簡 單"), (2, "  正 常"), (3, "  困 難"), (4, "  專 家")]
+        self.select_mode = MySelect(self.select_mode, mode)
+        self.select_speed = MySelect(self.select_speed, speed)
 
     def on_button_save_settings_click(self, event):
-        mode = self.select_mode.currentText()
-        speed = self.select_speed.currentText()
+        isZen = self.select_mode.get_options()
+        speed = self.select_speed.get_options()
         config = {
-            "mode" : mode,
+            "isZen" : isZen,
             "speed" : speed,
         }
-        dumpJsonFile(config, "client/.local/config.json")
+        save_config(config)
         open_window("儲存成功!")
         change_page(self.pages, "page_single")
     
