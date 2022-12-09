@@ -51,7 +51,7 @@ class RoomList:
         cls.lock.acquire()
         for room_id in cls.room_list:
             if user in cls.room_list[room_id]:
-                result = True
+                result = room_id
                 break
         cls.lock.release()
         return result

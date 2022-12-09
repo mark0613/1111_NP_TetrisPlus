@@ -27,6 +27,7 @@ page_map = {
     "page_connection_end" : 9,
     "page_rank" : 10,
     "page_rule" : 11,
+    "page_room_list" : 12,
 }
 def change_page(pages: QtWidgets.QStackedWidget, page_name: str):
     index = page_map[page_name]
@@ -73,7 +74,6 @@ class LoginPage(Ui_TetrisWindow):
         username = self.input_username_in_login.text()
         password = self.input_password_in_login.text()
         if SERVER.login(username, password):
-            open_window("登入成功!")
             self.username = username
             change_page(self.pages, "page_menu")
         else:
@@ -93,8 +93,7 @@ class MenuPage(Ui_TetrisWindow):
         change_page(self.pages, "page_single")
 
     def on_button_connection_mode_click(self, event):
-        change_page(self.pages, "page_connection_room")
-        # TODO: pair
+        change_page(self.pages, "page_room_list")
     
     def on_button_rank_click(self, event):
         change_page(self.pages, "page_rank")
@@ -171,8 +170,42 @@ class RoomPage(Ui_TetrisWindow):
         self.button_back_to_menu_in_room.mousePressEvent = self.on_button_back_to_menu_click
 
 class ConnectionGamePage(Ui_TetrisWindow):
-    # TODO: socket connect two player and show board
-    pass
+    def play_connection_game(self):
+        # key_buffer = KeyBuffer()
+        # condition = threading.Condition()
+        # Tetris.set_key_buffer(key_buffer)
+        # Tetris.set_condition(condition)
+        # tetris = Tetris()
+        # tetris.next_display_method = self.display_p1_next_block
+        # tetris.held_display_method = self.display_p1_held_block
+        # tetris.board_display_method = self.display_p1_board_block
+        # t = threading.Thread(target=tetris.play)
+        # t.start()
+        pass
+    
+    def display_p1_next_block(self, title, img):
+        qimg = cv2_to_qimage(img)
+        self.img_my_next_in_connection.setPixmap(QPixmap.fromImage(qimg))
+
+    def display_p1_held_block(self, title, img):
+        qimg = cv2_to_qimage(img)
+        self.img_my_held_in_connection.setPixmap(QPixmap.fromImage(qimg))
+
+    def display_p1_board_block(self, title, img):
+        qimg = cv2_to_qimage(img)
+        self.img_my_board_in_connention.setPixmap(QPixmap.fromImage(qimg))
+        
+    def display_p2_next_block(self, title, img):
+        qimg = cv2_to_qimage(img)
+        self.img_peer_next_in_connection.setPixmap(QPixmap.fromImage(qimg))
+
+    def display_p2_held_block(self, title, img):
+        qimg = cv2_to_qimage(img)
+        self.img_peer_held_in_connection.setPixmap(QPixmap.fromImage(qimg))
+
+    def display_p2_board_block(self, title, img):
+        qimg = cv2_to_qimage(img)
+        self.img_peer_board_in_connection.setPixmap(QPixmap.fromImage(qimg))
 
 class EndPage(Ui_TetrisWindow):
     def bind(self):
@@ -187,3 +220,15 @@ class RulePage(Ui_TetrisWindow):
     def bind(self):
         self.button_back_to_menu_in_rule.mousePressEvent = self.on_button_back_to_menu_click
         # TODO: show rule
+
+class RoomListPage(Ui_TetrisWindow):
+    def bind(self):
+        self.button_create_room.mousePressEvent = self.on_button_create_room
+    
+    def on_button_create_room(self, event):
+        (result, room_id) = SERVER.create_room(self.username)
+        if result:
+            change_page(self.pages, "page_connection_room")
+            self.label_player1_in_room.setText(self.username)
+            self.room_id = room_id
+            self.join_room()

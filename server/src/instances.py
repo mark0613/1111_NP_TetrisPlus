@@ -28,7 +28,7 @@ class RoomListInstance:
         return self.room_list_service.destroy_room(room_id)
 
     def add_room(self, room_id, user):
-        return self.room_list_service.add_room(user, room_id)
+        return self.room_list_service.add_room(room_id, user)
 
     def quit_room(self, user):
         return self.room_list_service.quit_room(user)
