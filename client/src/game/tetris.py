@@ -58,6 +58,7 @@ class TetrisCommand(Enum):
 class Tetris:
     def __init__(self, ratio: int=20):
         self.ratio = ratio
+        self.level = 2
         self.score = 0
         self.piece_code = [piece for piece in PieceType]
         self.piece_color = {
@@ -147,7 +148,7 @@ class Tetris:
         cv2.imshow("Next", next_block)
         cv2.imshow("Held", held_block)
         cv2.imshow("Board", board_block)
-        return cv2.waitKey(400)
+        return cv2.waitKey(1000 / self.level)
 
     def on_listen_key(self, key: int):
         coords = self.current_piece.coords
@@ -270,7 +271,7 @@ class Tetris:
             
             self.eliminate()
         self.end_game()
-    
+
     def end_game(self):
         cv2.destroyAllWindows()
 

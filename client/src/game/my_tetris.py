@@ -64,7 +64,7 @@ class MyTetris(Tetris):
 
         if hasattr(self, "condition"):
             with self.condition:
-                self.condition.wait(0.4)
+                self.condition.wait(1 / self.level)
             key = self.key_buffer.get()
             print(key)
             return key
