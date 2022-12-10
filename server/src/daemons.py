@@ -109,8 +109,11 @@ class GameDaemon:
                         if request["type"] == "my_username":
                             username = request["username"]
                             self.username_connection_map[username] = connection
-                        r_addr = connection.getpeername()
-                        l_addr = connection.getsockname()
                     except ConnectionResetError:
+                        for user, con in self.username_connection_map.items():
+                            if con == connection:
+                                self.username_connection_map.pop(user, None)
+                                self.room_list_service.quit_room(user)
+                                break
                         self.connections.remove(connection)
                         break
