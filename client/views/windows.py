@@ -33,6 +33,7 @@ class MainWindow(QtWidgets.QMainWindow, *PAGE_CLASSES):
         self.bind()
         self.img1.setPixmap(QtGui.QPixmap(f"{settings.STATIC_DIR}/block1.png"))
         self.img2.setPixmap(QtGui.QPixmap(f"{settings.STATIC_DIR}/block2.png"))
+        self.img_rule.setPixmap(QtGui.QPixmap(f"{settings.STATIC_DIR}/rule.png"))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(f"{settings.STATIC_DIR}/home.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.button_back_to_menu_in_room.setIcon(icon)

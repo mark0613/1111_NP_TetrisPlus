@@ -2073,6 +2073,22 @@ font: 25pt &quot;Microsoft JhengHei&quot;;</string>
        <string>&lt;</string>
       </property>
      </widget>
+     <widget class="QLabel" name="img_rule">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>130</y>
+        <width>741</width>
+        <height>341</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="page_room_list">
      <widget class="QPushButton" name="button_create_room">
@@ -2154,7 +2170,7 @@ font: 25pt &quot;Microsoft JhengHei&quot;;</string>
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>25</height>
+     <height>18</height>
     </rect>
    </property>
   </widget>
