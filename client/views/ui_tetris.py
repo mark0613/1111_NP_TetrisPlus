@@ -537,7 +537,6 @@ class Ui_TetrisWindow(object):
 "    border: 1px solid #000;\n"
 "}")
         self.img1.setText("")
-        self.img1.setPixmap(QtGui.QPixmap("../static/block1.png"))
         self.img1.setScaledContents(True)
         self.img1.setObjectName("img1")
         self.img2 = QtWidgets.QLabel(self.page_connection_room)
@@ -550,7 +549,6 @@ class Ui_TetrisWindow(object):
 "    border: 1px solid #000;\n"
 "}")
         self.img2.setText("")
-        self.img2.setPixmap(QtGui.QPixmap("../static/block2.png"))
         self.img2.setScaledContents(True)
         self.img2.setObjectName("img2")
         self.button_back_to_menu_in_room = QtWidgets.QPushButton(self.page_connection_room)
@@ -561,9 +559,6 @@ class Ui_TetrisWindow(object):
         self.button_back_to_menu_in_room.setFont(font)
         self.button_back_to_menu_in_room.setStyleSheet("color: rgb(255, 255, 255);")
         self.button_back_to_menu_in_room.setText("")
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../static/home.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.button_back_to_menu_in_room.setIcon(icon)
         self.button_back_to_menu_in_room.setIconSize(QtCore.QSize(30, 30))
         self.button_back_to_menu_in_room.setObjectName("button_back_to_menu_in_room")
         self.pages.addWidget(self.page_connection_room)
@@ -890,7 +885,6 @@ class Ui_TetrisWindow(object):
         font.setPointSize(20)
         self.button_back_to_menu_in_rank.setFont(font)
         self.button_back_to_menu_in_rank.setText("")
-        self.button_back_to_menu_in_rank.setIcon(icon)
         self.button_back_to_menu_in_rank.setIconSize(QtCore.QSize(30, 30))
         self.button_back_to_menu_in_rank.setObjectName("button_back_to_menu_in_rank")
         self.pages.addWidget(self.page_rank)

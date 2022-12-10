@@ -1256,9 +1256,6 @@ font: 17pt &quot;Consolas&quot;;</string>
       <property name="text">
        <string/>
       </property>
-      <property name="pixmap">
-       <pixmap>../static/block1.png</pixmap>
-      </property>
       <property name="scaledContents">
        <bool>true</bool>
       </property>
@@ -1286,9 +1283,6 @@ font: 17pt &quot;Consolas&quot;;</string>
       <property name="text">
        <string/>
       </property>
-      <property name="pixmap">
-       <pixmap>../static/block2.png</pixmap>
-      </property>
       <property name="scaledContents">
        <bool>true</bool>
       </property>
@@ -1313,10 +1307,6 @@ font: 17pt &quot;Consolas&quot;;</string>
       </property>
       <property name="text">
        <string/>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>../static/home.png</normaloff>../static/home.png</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -2022,10 +2012,6 @@ font: 25pt &quot;Microsoft JhengHei&quot;;</string>
       </property>
       <property name="text">
        <string/>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>../static/home.png</normaloff>../static/home.png</iconset>
       </property>
       <property name="iconSize">
        <size>
