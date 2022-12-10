@@ -13,23 +13,26 @@ def is_valid_format(data: str):
     return True
 
 class GameDaemon:
-    def __init__(self):
+    def __init__(self, username):
         self.is_running = True
         self.client = TcpClient()
         self.client.connect(("127.0.0.1", 6666))
+        data = {
+            "type" : "my_username",
+            "username" : username
+        }
+        self.client.send(json.dumps(data))
         self.receiver = MulticastReceiver(7777)
         self.receiver.join_group("225.1.2.3")
     
-    def receive_from_tcp(self):
+    def receive_from_tcp(self, signal):
         while self.is_running:
             msg = self.client.receive()
             if not is_valid_format(msg):
                 continue
             data = json.loads(msg)
-            if data["type"] == "room_info":
-                self.show_room_info(data["room_info"])
-            elif data["type"] == "game_winner":
-                self.show_game_winner(data["game_winner"])
+            if data["type"] in ["room_info", "game_winner"]:
+                signal(data)
 
     def receive_from_mulicast(self, signal):
         while self.is_running:
