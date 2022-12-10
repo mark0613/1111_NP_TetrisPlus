@@ -2,7 +2,7 @@ from .pages import *
 
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import pyqtSignal
-
+import settings
 
 PAGE_CLASSES = [
     MainPage,
@@ -31,6 +31,12 @@ class MainWindow(QtWidgets.QMainWindow, *PAGE_CLASSES):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
         self.bind()
+        self.img1.setPixmap(QtGui.QPixmap(f"{settings.STATIC_DIR}/block1.png"))
+        self.img2.setPixmap(QtGui.QPixmap(f"{settings.STATIC_DIR}/block2.png"))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(f"{settings.STATIC_DIR}/home.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.button_back_to_menu_in_room.setIcon(icon)
+        self.button_back_to_menu_in_rank.setIcon(icon)
         MainPage.show(self)
 
     def bind(self):
