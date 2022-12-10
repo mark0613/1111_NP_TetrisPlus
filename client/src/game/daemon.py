@@ -1,3 +1,4 @@
+from src.game.data_format import TetrisData
 from src.utils.sockets import *
 
 import json
@@ -43,8 +44,21 @@ class GameDaemon:
             if data["type"] == "room_list":
                 signal(data["room_list"])
     
-    def show_room_info(self, data: dict):
-        print(data)
+    def start_game(self, my_port: int, peer_address: tuple):
+        self.udp = UdpSocket()
+        self.udp.buf_size = 1024 * 3
+        self.udp.bind(my_port)
+        self.peer = peer_address
+    
+    def send_game_board(self, data: str):
+        self.udp.send_to(data, self.peer)
+
+    def receive_from_udp(self, signal):
+        while self.is_running:
+            msg, address = self.udp.receive_from()
+            print(len(msg))
+            data = TetrisData.load_by_string(msg)
+            signal(data)
     
     def show_game_winner(self, data: dict):
         print(data)
@@ -55,3 +69,12 @@ class GameDaemon:
     
     def close(self):
         self.client.close()
+
+class TimerDaemon:
+    def __init__(self, seconds: int):
+        self.seconds = seconds - 1
+    
+    def run(self, show=print):
+        while self.seconds >= 0:
+            show(self.seconds)
+            self.seconds -= 1
