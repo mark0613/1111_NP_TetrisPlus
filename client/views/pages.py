@@ -157,7 +157,9 @@ class SingleGamePage(Ui_TetrisWindow):
         game.set_display_method(self.display_next_block, self.display_held_block, self.display_board_block)
         game.set_show_score_method(self.show_score_in_single)
 
-        if not self.config["isZen"]:
+        if self.config["isZen"]:
+            self.show_time_in_single("--:--")
+        else:
             timer = TimerDaemon(120)
             self.thread_timer = QThread()
             self.task_timer = LongTask(timer.run, (self.show_time_in_single, ))
