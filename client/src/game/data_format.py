@@ -10,13 +10,10 @@ class TetrisSmallBlock:
         self.coords = coords
         self.color = color
         self.set_data()
-    
+
     @classmethod
-    def load_by_string(cls, data: str):
-        data = json.loads(data)
-        data["coords"] = np.array(data["coords"])
-        data["color"] = Color[data["color"]]
-        return TetrisSmallBlock(**data)
+    def load_by_transport_format(cls, title: str, coords: list, color: str):
+        return TetrisSmallBlock(title, np.array(coords), Color[color])
 
     def get_json_data(self, type: str="origin"):
         if type == "transport":
@@ -39,13 +36,9 @@ class TetrisBoardBlock(TetrisSmallBlock):
         super().__init__(title, coords, color)
     
     @classmethod
-    def load_by_string(cls, data: str):
-        data = json.loads(data)
-        data["scr"] = np.array(data["src"])
-        data["coords"] = np.array(data["coords"])
-        data["color"] = Color[data["color"]]
-        return TetrisBoardBlock(**data)
-    
+    def load_by_transport_format(cls, title: str, src: list, coords: list, color: str):
+        return TetrisBoardBlock(title, np.array(src), np.array(coords), Color[color])
+
     def set_data(self):
         super().set_data()
         self.data["src"] = self.data["src"].tolist()
@@ -60,10 +53,20 @@ class TetrisData:
         data = self.__dict__.copy()
         for k, v in data.items():
             data[k] = v.get_json_data("transport")
+        data.pop("data", None)
         return json.dumps(data)
 
     def get_json_data(self) -> dict:
         data = self.__dict__.copy()
         for k, v in data.items():
             data[k] = v.get_json_data()
+        data.pop("data", None)
         return data
+
+    @classmethod
+    def load_by_string(cls, data: str):
+        data = json.loads(data)
+        data["next"] = TetrisSmallBlock.load_by_transport_format(**data["next"])
+        data["held"] = TetrisSmallBlock.load_by_transport_format(**data["held"])
+        data["board"] = TetrisBoardBlock.load_by_transport_format(**data["board"])
+        return TetrisData(**data)

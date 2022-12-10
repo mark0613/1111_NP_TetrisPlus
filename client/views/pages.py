@@ -188,8 +188,8 @@ class RoomPage(Ui_TetrisWindow):
                 self.peer_connection_info = members[name]
                 room_is_full = True
         if room_is_full:
-            pass
-            # TODO: start game
+            change_page(self.pages, "page_connection_game")
+            self.play_connection_game()
     
     def quit_room(self, event):
         SERVER.quit_room(self.username)
@@ -197,17 +197,28 @@ class RoomPage(Ui_TetrisWindow):
 
 class ConnectionGamePage(Ui_TetrisWindow):
     def play_connection_game(self):
-        # key_buffer = KeyBuffer()
-        # condition = threading.Condition()
-        # Tetris.set_key_buffer(key_buffer)
-        # Tetris.set_condition(condition)
-        # tetris = Tetris()
-        # tetris.next_display_method = self.display_p1_next_block
-        # tetris.held_display_method = self.display_p1_held_block
-        # tetris.board_display_method = self.display_p1_board_block
-        # t = threading.Thread(target=tetris.play)
-        # t.start()
-        pass
+        my_port = int(self.my_connection_info.split(":")[1])
+        p_ip, p_port = self.peer_connection_info.split(":")
+        p_port = int(p_port)
+        self.daemon.start_game(my_port, (p_ip, p_port))
+
+        self.key_buffer = KeyBuffer()
+        self.condition = threading.Condition()
+        my_game = MyTetris(20, self.daemon.send_game_board)
+        my_game.set_key_buffer(self.key_buffer)
+        my_game.set_condition(self.condition)
+        my_game.set_display_method(self.display_p1_next_block, self.display_p1_held_block, self.display_p1_board_block)
+        
+        peer_game = MyTetris(15)
+        peer_game.set_display_method(self.display_p2_next_block, self.display_p2_held_block, self.display_p2_board_block)
+        self.task_udp = LongTask(self.daemon.receive_from_udp, (peer_game.display_with, ))
+        self.thread_udp = QThread()
+        self.task_udp.moveToThread(self.thread_udp)
+        self.thread_udp.started.connect(self.task_udp.run)
+        self.thread_udp.start()
+
+        t = threading.Thread(target=my_game.play)
+        t.start()
     
     def display_p1_next_block(self, title, img):
         qimg = cv2_to_qimage(img)
