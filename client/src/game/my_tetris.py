@@ -1,4 +1,4 @@
-from .data_format import *
+from src.game.data_format import *
 from src.game.keyboard import KeyBuffer
 from src.game.tetris import Tetris
 

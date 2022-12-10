@@ -2,7 +2,7 @@ from .components import *
 from .ui_tetris import Ui_TetrisWindow
 from src.game.daemon import *
 from src.game.keyboard import KeyBuffer
-from src.socket.my_tetris import MyTetris
+from src.game.my_tetris import MyTetris
 from src.utils.sockets import *
 from src.utils.config import *
 from src.utils.file import *
