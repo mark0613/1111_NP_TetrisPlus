@@ -269,6 +269,10 @@ class Tetris:
                     self.top_left[0] += 1
             
             self.eliminate()
+        self.end_game()
+    
+    def end_game(self):
+        cv2.destroyAllWindows()
 
 
 if __name__ == "__main__":

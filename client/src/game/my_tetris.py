@@ -1,6 +1,7 @@
 from src.game.data_format import *
 from src.game.keyboard import KeyBuffer
 from src.game.tetris import Tetris
+from src.utils.tasks import Task
 
 import threading
 
@@ -21,7 +22,14 @@ class MyTetris(Tetris):
         self.display_held = held
         self.display_board = board
 
+    def set_show_score_method(self, show):
+        self.show_score = show
+
+    def set_end_game_tasks(self, tasks: list):
+        self.end_tasks = tasks
+
     def display(self):
+        self.show_score(self.score)
         next = TetrisSmallBlock("Next", self.next_piece.coords, self.next_piece.color)
         held = TetrisSmallBlock("Held", self.held_piece.coords, self.held_piece.color)
         board = TetrisBoardBlock("Board", self.board.copy(), self.current_piece.coords, self.current_piece.color)
@@ -60,3 +68,8 @@ class MyTetris(Tetris):
             key = self.key_buffer.get()
             print(key)
             return key
+
+    def end_game(self):
+        if hasattr(self, "end_tasks"):
+            for task in self.end_tasks:
+                task.run()

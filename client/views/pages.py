@@ -3,9 +3,10 @@ from .ui_tetris import Ui_TetrisWindow
 from src.game.daemon import *
 from src.game.keyboard import KeyBuffer
 from src.game.my_tetris import MyTetris
-from src.utils.sockets import *
 from src.utils.config import *
 from src.utils.file import *
+from src.utils.sockets import *
+from src.utils.tasks import Task
 
 from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtCore import QThread
@@ -152,8 +153,17 @@ class SingleGamePage(Ui_TetrisWindow):
         game.set_key_buffer(self.key_buffer)
         game.set_condition(self.condition)
         game.set_display_method(self.display_next_block, self.display_held_block, self.display_board_block)
-        thread_game = threading.Thread(target=game.play)
-        thread_game.start()
+        game.set_show_score_method(self.show_score_in_single)
+        
+        self.task_single_game = LongTask(game.play)
+        self.thread_single_game = QThread()
+        self.task_single_game.moveToThread(self.thread_single_game)
+        self.thread_single_game.started.connect(self.task_single_game.run)
+        self.thread_single_game.start()
+        game.set_end_game_tasks([
+            Task(change_page, (self.pages, "page_rank")),
+            Task(self.thread_single_game.terminate),
+        ])
 
     def display_next_block(self, title, img):
         qimg = cv2_to_qimage(img)
@@ -166,6 +176,10 @@ class SingleGamePage(Ui_TetrisWindow):
     def display_board_block(self, title, img):
         qimg = cv2_to_qimage(img)
         self.img_board_in_single.setPixmap(QtGui.QPixmap.fromImage(qimg))
+
+    def show_score_in_single(self, score: int):
+        score = str(score)
+        self.label_my_score_in_single.setText(score)
 
 class RoomPage(Ui_TetrisWindow):
     def bind(self):
