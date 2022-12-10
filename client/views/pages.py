@@ -2,7 +2,7 @@ from .components import *
 from .ui_tetris import Ui_TetrisWindow
 from src.game.daemon import *
 from src.game.keyboard import KeyBuffer
-from src.game.tetris import Tetris
+from src.socket.my_tetris import MyTetris
 from src.utils.sockets import *
 from src.utils.config import *
 from src.utils.file import *
@@ -113,7 +113,6 @@ class MenuPage(Ui_TetrisWindow):
     def on_button_rule_click(self, event):
         change_page(self.pages, "page_rule")
     
-
 class SinglePage(Ui_TetrisWindow):
     def bind(self):
         self.button_start.mousePressEvent = self.on_button_start_click
@@ -157,14 +156,12 @@ class SingleGamePage(Ui_TetrisWindow):
     def play_game(self):
         self.key_buffer = KeyBuffer()
         self.condition = threading.Condition()
-        Tetris.set_key_buffer(self.key_buffer)
-        Tetris.set_condition(self.condition)
-        tetris = Tetris()
-        tetris.next_display_method = self.display_next_block
-        tetris.held_display_method = self.display_held_block
-        tetris.board_display_method = self.display_board_block
-        t = threading.Thread(target=tetris.play)
-        t.start()
+        game = MyTetris()
+        game.set_key_buffer(self.key_buffer)
+        game.set_condition(self.condition)
+        game.set_display_method(self.display_next_block, self.display_held_block, self.display_board_block)
+        thread_game = threading.Thread(target=game.play)
+        thread_game.start()
 
     def display_next_block(self, title, img):
         qimg = cv2_to_qimage(img)

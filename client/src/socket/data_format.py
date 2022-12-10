@@ -4,7 +4,7 @@ import json
 import numpy as np
 
 
-class TetrisBlock:
+class TetrisSmallBlock:
     def __init__(self, title: str, coords: np.ndarray, color: Color) -> None:
         self.title = title
         self.coords = coords
@@ -16,7 +16,7 @@ class TetrisBlock:
         data = json.loads(data)
         data["coords"] = np.array(data["coords"])
         data["color"] = Color[data["color"]]
-        return TetrisBlock(**data)
+        return TetrisSmallBlock(**data)
 
     def get_json_data(self, type: str="origin"):
         if type == "transport":
@@ -33,8 +33,25 @@ class TetrisBlock:
         self.data["coords"] = self.data["coords"].tolist()
         self.data["color"] = self.data["color"].name
 
+class TetrisBoardBlock(TetrisSmallBlock):
+    def __init__(self, title: str, src: np.ndarray, coords: np.ndarray, color: Color) -> None:
+        self.src = src
+        super().__init__(title, coords, color)
+    
+    @classmethod
+    def load_by_string(cls, data: str):
+        data = json.loads(data)
+        data["scr"] = np.array(data["src"])
+        data["coords"] = np.array(data["coords"])
+        data["color"] = Color[data["color"]]
+        return TetrisBoardBlock(**data)
+    
+    def set_data(self):
+        super().set_data()
+        self.data["src"] = self.data["src"].tolist()
+
 class TetrisData:
-    def __init__(self, next: TetrisBlock, held: TetrisBlock, board: TetrisBlock) -> None:
+    def __init__(self, next: TetrisSmallBlock, held: TetrisSmallBlock, board: TetrisBoardBlock) -> None:
         self.next = next
         self.held = held
         self.board = board
