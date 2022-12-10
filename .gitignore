@@ -6,3 +6,6 @@
 
 # venv
 venv
+
+# test files (not testing)
+**/test.*
