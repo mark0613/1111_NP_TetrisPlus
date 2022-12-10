@@ -45,18 +45,23 @@ class GameDaemon:
 
     def send_room_info(self, room_id):
         members = self.room_list_service.get_room_members(room_id)
+        members_address = {}
+        for member in members:
+            connection = self.username_connection_map[member]
+            ip, port = connection.getpeername()
+            members_address[member] = f"{ip}:{port}"
         data = {
             "type" : "room_info",
             "room_info" : {
                 "room_id" : room_id,
-                "members" : members,
+                "members" : members_address,
             }
         }
         data = json.dumps(data)
         for username in members:
             try:
                 connection = self.username_connection_map[username]
-                connection.send(data)
+                connection.send(data.encode("utf-8"))
             except:
                 pass
 
@@ -100,7 +105,7 @@ class GameDaemon:
                 else:
                     try:
                         request = self.receive_msg(connection)
-                        request = json.dumps(request)
+                        request = json.loads(request)
                         if request["type"] == "my_username":
                             username = request["username"]
                             self.username_connection_map[username] = connection
