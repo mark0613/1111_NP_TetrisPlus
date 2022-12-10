@@ -1,6 +1,7 @@
 from .pages import *
 
 from PyQt5 import QtWidgets
+from PyQt5.QtCore import pyqtSignal
 
 
 PAGE_CLASSES = [
@@ -23,6 +24,8 @@ GAMING_PAGE = [
 ]
 
 class MainWindow(QtWidgets.QMainWindow, *PAGE_CLASSES):
+    roomlist_signal = pyqtSignal(list)
+
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
@@ -53,3 +56,6 @@ class MainWindow(QtWidgets.QMainWindow, *PAGE_CLASSES):
         self.key_buffer.put(key)
         with self.condition:
             self.condition.notifyAll()
+        
+    def closeEvent(self, event):
+        self.daemon.close()
