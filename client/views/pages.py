@@ -96,15 +96,7 @@ class MenuPage(Ui_TetrisWindow):
         change_page(self.pages, "page_single")
 
     def on_button_connection_mode_click(self, event):
-        if not hasattr(self, "daemon"):
-            self.daemon = GameDaemon()
-            self.roomlist_signal.connect(self.show_room_list)
-            self.task_roomlist = LongTask(self.daemon.receive_from_mulicast, (self.roomlist_signal.emit, ))
-            self.thread_roomlist = QThread()
-            self.task_roomlist.moveToThread(self.thread_roomlist)
-            self.thread_roomlist.started.connect(self.task_roomlist.run)
-            self.thread_roomlist.start()
-
+        self.start_daemon()
         change_page(self.pages, "page_room_list")
     
     def on_button_rank_click(self, event):
@@ -177,7 +169,31 @@ class SingleGamePage(Ui_TetrisWindow):
 
 class RoomPage(Ui_TetrisWindow):
     def bind(self):
-        self.button_back_to_menu_in_room.mousePressEvent = self.on_button_back_to_menu_click
+        self.button_back_to_menu_in_room.mousePressEvent = self.quit_room
+    
+    def show_room_info(self, data: dict):
+        room_id = data["room_id"]
+        members = data["members"]
+        room_is_full = False
+        for idx, name in enumerate(members):
+            if idx == 0:
+                self.label_player1_in_room.setText(name)
+            else:
+                self.label_player2_in_room.setText(name)
+            
+            if name == self.username:
+                self.my_connection_info = members[name]
+            else:
+                self.peer_name = name
+                self.peer_connection_info = members[name]
+                room_is_full = True
+        if room_is_full:
+            pass
+            # TODO: start game
+    
+    def quit_room(self, event):
+        SERVER.quit_room(self.username)
+        self.on_button_back_to_menu_click(event)
 
 class ConnectionGamePage(Ui_TetrisWindow):
     def play_connection_game(self):
