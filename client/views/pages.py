@@ -1,11 +1,14 @@
 from .components import *
 from .ui_tetris import Ui_TetrisWindow
-from src.game.tetris import Tetris
+from src.game.daemon import *
 from src.game.keyboard import KeyBuffer
-from src.utils.file import *
+from src.game.tetris import Tetris
+from src.utils.sockets import *
 from src.utils.config import *
+from src.utils.file import *
 
-from PyQt5 import QtWidgets
+from PyQt5 import QtGui, QtWidgets
+from PyQt5.QtCore import QThread
 import xmlrpc.client
 import threading
 
@@ -93,6 +96,15 @@ class MenuPage(Ui_TetrisWindow):
         change_page(self.pages, "page_single")
 
     def on_button_connection_mode_click(self, event):
+        if not hasattr(self, "daemon"):
+            self.daemon = GameDaemon()
+            self.roomlist_signal.connect(self.show_room_list)
+            self.task_roomlist = LongTask(self.daemon.receive_from_mulicast, (self.roomlist_signal.emit, ))
+            self.thread_roomlist = QThread()
+            self.task_roomlist.moveToThread(self.thread_roomlist)
+            self.thread_roomlist.started.connect(self.task_roomlist.run)
+            self.thread_roomlist.start()
+
         change_page(self.pages, "page_room_list")
     
     def on_button_rank_click(self, event):
@@ -100,6 +112,7 @@ class MenuPage(Ui_TetrisWindow):
 
     def on_button_rule_click(self, event):
         change_page(self.pages, "page_rule")
+    
 
 class SinglePage(Ui_TetrisWindow):
     def bind(self):
@@ -155,15 +168,15 @@ class SingleGamePage(Ui_TetrisWindow):
 
     def display_next_block(self, title, img):
         qimg = cv2_to_qimage(img)
-        self.img_next_in_single.setPixmap(QPixmap.fromImage(qimg))
+        self.img_next_in_single.setPixmap(QtGui.QPixmap.fromImage(qimg))
 
     def display_held_block(self, title, img):
         qimg = cv2_to_qimage(img)
-        self.img_held_in_single.setPixmap(QPixmap.fromImage(qimg))
+        self.img_held_in_single.setPixmap(QtGui.QPixmap.fromImage(qimg))
 
     def display_board_block(self, title, img):
         qimg = cv2_to_qimage(img)
-        self.img_board_in_single.setPixmap(QPixmap.fromImage(qimg))
+        self.img_board_in_single.setPixmap(QtGui.QPixmap.fromImage(qimg))
 
 class RoomPage(Ui_TetrisWindow):
     def bind(self):
@@ -185,27 +198,27 @@ class ConnectionGamePage(Ui_TetrisWindow):
     
     def display_p1_next_block(self, title, img):
         qimg = cv2_to_qimage(img)
-        self.img_my_next_in_connection.setPixmap(QPixmap.fromImage(qimg))
+        self.img_my_next_in_connection.setPixmap(QtGui.QPixmap.fromImage(qimg))
 
     def display_p1_held_block(self, title, img):
         qimg = cv2_to_qimage(img)
-        self.img_my_held_in_connection.setPixmap(QPixmap.fromImage(qimg))
+        self.img_my_held_in_connection.setPixmap(QtGui.QPixmap.fromImage(qimg))
 
     def display_p1_board_block(self, title, img):
         qimg = cv2_to_qimage(img)
-        self.img_my_board_in_connention.setPixmap(QPixmap.fromImage(qimg))
+        self.img_my_board_in_connention.setPixmap(QtGui.QPixmap.fromImage(qimg))
         
     def display_p2_next_block(self, title, img):
         qimg = cv2_to_qimage(img)
-        self.img_peer_next_in_connection.setPixmap(QPixmap.fromImage(qimg))
+        self.img_peer_next_in_connection.setPixmap(QtGui.QPixmap.fromImage(qimg))
 
     def display_p2_held_block(self, title, img):
         qimg = cv2_to_qimage(img)
-        self.img_peer_held_in_connection.setPixmap(QPixmap.fromImage(qimg))
+        self.img_peer_held_in_connection.setPixmap(QtGui.QPixmap.fromImage(qimg))
 
     def display_p2_board_block(self, title, img):
         qimg = cv2_to_qimage(img)
-        self.img_peer_board_in_connection.setPixmap(QPixmap.fromImage(qimg))
+        self.img_peer_board_in_connection.setPixmap(QtGui.QPixmap.fromImage(qimg))
 
 class EndPage(Ui_TetrisWindow):
     def bind(self):
@@ -231,4 +244,21 @@ class RoomListPage(Ui_TetrisWindow):
             change_page(self.pages, "page_connection_room")
             self.label_player1_in_room.setText(self.username)
             self.room_id = room_id
-            self.join_room()
+    
+    def join_room(self, room_id):
+        result = SERVER.add_room(room_id, self.username)
+        if result:
+            change_page(self.pages, "page_connection_room")
+        else:
+            open_window("滿人了!")
+
+    def show_room_list(self, data):
+        self.list_room_list.clear()
+        for room in data:
+            room_id = room["room_id"]
+            count = room["count"]
+            add_list_item_contain_button(
+                self.list_room_list,
+                f"{room_id} [{count}/2]",
+                lambda : self.join_room(room_id)
+            )
