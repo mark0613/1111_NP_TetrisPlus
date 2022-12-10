@@ -6,8 +6,9 @@ import threading
 
 
 class MyTetris(Tetris):
-    def __init__(self, ratio=20):
+    def __init__(self, ratio=20, send_data=None):
         super().__init__(ratio)
+        self.send_data = send_data
 
     def set_key_buffer(self, key_buffer: KeyBuffer):
         self.key_buffer = key_buffer
@@ -25,6 +26,8 @@ class MyTetris(Tetris):
         held = TetrisSmallBlock("Held", self.held_piece.coords, self.held_piece.color)
         board = TetrisBoardBlock("Board", self.board.copy(), self.current_piece.coords, self.current_piece.color)
         data = TetrisData(next, held, board)
+        if self.send_data:
+            self.send_data(str(data))
         return self.display_with(data)
 
     def display_with(self, data: TetrisData):
@@ -51,8 +54,9 @@ class MyTetris(Tetris):
         self.display_held(held.title, held_block)
         self.display_board(board.title, board_block)
 
-        with self.condition:
-            self.condition.wait(0.4)
-        key = self.key_buffer.get()
-        print(key)
-        return key
+        if hasattr(self, "condition"):
+            with self.condition:
+                self.condition.wait(0.4)
+            key = self.key_buffer.get()
+            print(key)
+            return key

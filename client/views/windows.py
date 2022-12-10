@@ -21,6 +21,7 @@ PAGE_CLASSES = [
 ]
 GAMING_PAGE = [
     "page_single_game",
+    "page_connection_game",
 ]
 
 class MainWindow(QtWidgets.QMainWindow, *PAGE_CLASSES):
@@ -55,7 +56,6 @@ class MainWindow(QtWidgets.QMainWindow, *PAGE_CLASSES):
 
     def start_daemon(self):
         def show_tcp_data(data: dict):
-            print(data)
             if data["type"] == "room_info":
                 self.show_room_info(data["room_info"])
             if data["type"] == "game_winner":
