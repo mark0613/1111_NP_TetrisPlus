@@ -147,23 +147,36 @@ class SettingsPage(Ui_TetrisWindow):
 
 class SingleGamePage(Ui_TetrisWindow):
     def play_game(self):
+
         self.key_buffer = KeyBuffer()
         self.condition = threading.Condition()
         game = MyTetris()
+        game.level = self.config["speed"]
         game.set_key_buffer(self.key_buffer)
         game.set_condition(self.condition)
         game.set_display_method(self.display_next_block, self.display_held_block, self.display_board_block)
         game.set_show_score_method(self.show_score_in_single)
-        
+
+        if not self.config["isZen"]:
+            timer = TimerDaemon(120)
+            self.thread_timer = QThread()
+            self.task_timer = LongTask(timer.run, (self.show_time_in_single, ))
+            self.task_timer.moveToThread(self.thread_timer)
+            self.thread_timer.started.connect(self.task_timer.run)
+            timer.wait([
+                Task(self.thread_timer.terminate),
+                Task(self.end_game_in_single),
+            ])
+            self.thread_timer.start()
+
         self.task_single_game = LongTask(game.play)
         self.thread_single_game = QThread()
         self.task_single_game.moveToThread(self.thread_single_game)
         self.thread_single_game.started.connect(self.task_single_game.run)
-        self.thread_single_game.start()
         game.set_end_game_tasks([
-            Task(change_page, (self.pages, "page_rank")),
-            Task(self.thread_single_game.terminate),
+            Task(self.end_game_in_single),
         ])
+        self.thread_single_game.start()
 
     def display_next_block(self, title, img):
         qimg = cv2_to_qimage(img)
@@ -180,6 +193,13 @@ class SingleGamePage(Ui_TetrisWindow):
     def show_score_in_single(self, score: int):
         score = str(score)
         self.label_my_score_in_single.setText(score)
+
+    def show_time_in_single(self, time: str):
+        self.label_time_in_single.setText(time)
+
+    def end_game_in_single(self):
+        change_page(self.pages, "page_rank")
+        self.thread_single_game.terminate()
 
 class RoomPage(Ui_TetrisWindow):
     def bind(self):

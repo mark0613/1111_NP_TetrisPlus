@@ -1,7 +1,9 @@
 from src.game.data_format import TetrisData
 from src.utils.sockets import *
+from src.utils.tasks import Task
 
 import json
+import time
 
 
 def is_valid_format(data: str):
@@ -76,5 +78,13 @@ class TimerDaemon:
     
     def run(self, show=print):
         while self.seconds >= 0:
-            show(self.seconds)
+            text = f"{self.seconds//60}:{self.seconds%60}"
+            show(text)
             self.seconds -= 1
+            time.sleep(1)
+        if hasattr(self, "tasks"):
+            for task in self.tasks:
+                task.run()
+    
+    def wait(self, tasks: list):
+        self.tasks = tasks

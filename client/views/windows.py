@@ -1,4 +1,6 @@
 from .pages import *
+from src.utils.config import *
+from src.utils.record import *
 
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import pyqtSignal
@@ -32,6 +34,8 @@ class MainWindow(QtWidgets.QMainWindow, *PAGE_CLASSES):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
         self.bind()
+        self.load_data()
+        
         self.img1.setPixmap(QtGui.QPixmap(f"{settings.STATIC_DIR}/block1.png"))
         self.img2.setPixmap(QtGui.QPixmap(f"{settings.STATIC_DIR}/block2.png"))
         self.img_rule.setPixmap(QtGui.QPixmap(f"{settings.STATIC_DIR}/rule.png"))
@@ -53,6 +57,10 @@ class MainWindow(QtWidgets.QMainWindow, *PAGE_CLASSES):
         RankPage.bind(self)
         RulePage.bind(self)
         RoomListPage.bind(self)
+
+    def load_data(self):
+        self.config = load_config()
+        self.record = load_record()
 
     def start_daemon(self):
         def show_tcp_data(data: dict):
