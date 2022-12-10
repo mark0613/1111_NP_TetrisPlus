@@ -1,3 +1,5 @@
+import binascii
+import hashlib
 import random
 import string
 import select
@@ -58,3 +60,16 @@ class MulticastReceiver(UdpSocket):
         group = socket.inet_aton(group_ip)
         mreq = struct.pack('4sL', group, socket.INADDR_ANY)
         self.socket.setsockopt(socket.IPPROTO_IP, socket.IP_DROP_MEMBERSHIP, mreq)
+
+class PasswordEncoder:
+    def encode(password, salt=None):
+        if salt is None:
+            salt = get_random_string(4)
+        password_hash = hashlib.pbkdf2_hmac('sha256', password.encode(), salt.encode(), 100000)
+        salt_str = binascii.hexlify(salt).decode()
+        password_hash_str = binascii.hexlify(password_hash).decode()
+        return salt_str, password_hash_str
+
+    def verify(password, salt, password_hash):
+        my_hash = hashlib.pbkdf2_hmac('sha256', password.encode(), salt.encode(), 100000)
+        return my_hash == password_hash
