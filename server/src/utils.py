@@ -1,8 +1,6 @@
-import binascii
-import hashlib
+import bcrypt
 import random
 import string
-import select
 import socket
 import struct
 
@@ -62,14 +60,12 @@ class MulticastReceiver(UdpSocket):
         self.socket.setsockopt(socket.IPPROTO_IP, socket.IP_DROP_MEMBERSHIP, mreq)
 
 class PasswordEncoder:
-    def encode(password, salt=None):
-        if salt is None:
-            salt = get_random_string(4)
-        password_hash = hashlib.pbkdf2_hmac('sha256', password.encode(), salt.encode(), 100000)
-        salt_str = binascii.hexlify(salt).decode()
-        password_hash_str = binascii.hexlify(password_hash).decode()
-        return salt_str, password_hash_str
+    def encode(self, password: str) -> str:
+        password = password.encode('utf-8')
+        hash = bcrypt.hashpw(password, bcrypt.gensalt(10))
+        return hash.decode('utf-8')
 
-    def verify(password, salt, password_hash):
-        my_hash = hashlib.pbkdf2_hmac('sha256', password.encode(), salt.encode(), 100000)
-        return my_hash == password_hash
+    def verify(self, password: str, hash: str) -> str:
+        password = password.encode('utf-8')
+        hash = hash.encode('utf-8')
+        return bcrypt.checkpw(password, hash)
