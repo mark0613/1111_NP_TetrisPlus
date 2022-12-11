@@ -67,7 +67,7 @@ class MainWindow(QtWidgets.QMainWindow, *PAGE_CLASSES):
             if data["type"] == "room_info":
                 self.show_room_info(data["room_info"])
             if data["type"] == "game_winner":
-                print(data["game_winner"])
+                self.show_winner(data["info"])
         if not hasattr(self, "daemon"):
             self.daemon = GameDaemon(self.username)
             self.roomlist_signal.connect(self.show_room_list)
