@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>792</width>
+    <height>577</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1894,7 +1894,7 @@ border-radius: 7px;</string>
         <x>24</x>
         <y>39</y>
         <width>751</width>
-        <height>511</height>
+        <height>501</height>
        </rect>
       </property>
       <property name="styleSheet">
@@ -1919,25 +1919,45 @@ background: rgb(180, 217, 217);
 }</string>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab_single_rank">
        <attribute name="title">
         <string>個人</string>
        </attribute>
-       <widget class="QLabel" name="label_single_rank">
+       <widget class="QListWidget" name="list_record">
         <property name="geometry">
          <rect>
-          <x>220</x>
-          <y>10</y>
+          <x>10</x>
+          <y>70</y>
+          <width>371</width>
+          <height>371</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QListWidget" name="list_single_rank">
+        <property name="geometry">
+         <rect>
+          <x>380</x>
+          <y>70</y>
+          <width>361</width>
+          <height>371</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_record">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>20</y>
           <width>311</width>
-          <height>61</height>
+          <height>41</height>
          </rect>
         </property>
         <property name="font">
          <font>
           <family>Microsoft JhengHei</family>
-          <pointsize>25</pointsize>
+          <pointsize>20</pointsize>
           <weight>50</weight>
           <italic>false</italic>
           <bold>false</bold>
@@ -1945,10 +1965,39 @@ background: rgb(180, 217, 217);
         </property>
         <property name="styleSheet">
          <string notr="true">color: rgb(255, 255, 255);
-font: 25pt &quot;Microsoft JhengHei&quot;;</string>
+font: 20pt &quot;Microsoft JhengHei&quot;;</string>
         </property>
         <property name="text">
-         <string>個人排行榜</string>
+         <string>遊玩紀錄</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_record_2">
+        <property name="geometry">
+         <rect>
+          <x>410</x>
+          <y>20</y>
+          <width>311</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>Microsoft JhengHei</family>
+          <pointsize>20</pointsize>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color: rgb(255, 255, 255);
+font: 20pt &quot;Microsoft JhengHei&quot;;</string>
+        </property>
+        <property name="text">
+         <string>排行榜</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -1993,12 +2042,22 @@ font: 25pt &quot;Microsoft JhengHei&quot;;</string>
          <set>Qt::AlignCenter</set>
         </property>
        </widget>
+       <widget class="QListWidget" name="list_connection_rank">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>70</y>
+          <width>711</width>
+          <height>371</height>
+         </rect>
+        </property>
+       </widget>
       </widget>
      </widget>
      <widget class="QPushButton" name="button_back_to_menu_in_rank">
       <property name="geometry">
        <rect>
-        <x>720</x>
+        <x>700</x>
         <y>10</y>
         <width>71</width>
         <height>61</height>
