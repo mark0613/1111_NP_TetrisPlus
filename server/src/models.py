@@ -36,5 +36,5 @@ class RankModel(Base):
         self.mode = mode
         self.score = 0
 
-# Base.metadata.drop_all(settings.DB_ENGINE)
+Base.metadata.drop_all(settings.DB_ENGINE)
 Base.metadata.create_all(settings.DB_ENGINE)
