@@ -54,7 +54,7 @@ class MyTetris(Tetris):
         held_block = self.enlarge(held_block)
 
         board = data.board
-        board_block = board.src
+        board_block = board.src.astype("uint8")
         board_block[board.coords[:, 0], board.coords[:, 1]] = board.color.value
         board_block = self.enlarge(board_block)
 
