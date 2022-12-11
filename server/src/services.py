@@ -5,6 +5,7 @@ from .exceptions import *
 
 class UserService:
     user_dao = UserDao()
+    password_encoder = PasswordEncoder()
 
     def get_user_by_id(self, id: int) -> UserModel:
         return self.user_dao.find_by_id(id)
@@ -14,6 +15,7 @@ class UserService:
 
     def add_user(self, user: UserModel) -> None:
         if self.get_user_by_username(user.username) == None:
+            user.password = self.password_encoder.encode(user.password)
             self.user_dao.save(user)
         else:
             raise DuplicateUsername("duplicate username")
@@ -22,7 +24,8 @@ class UserService:
         user_data = self.get_user_by_username(user.username)
         if user_data == None:
             return False
-        return user_data.password == user.password
+        hash = user_data.password
+        return self.password_encoder.verify(user.password, hash)
 
 class RoomListService:
     room_list_dao = RoomListDao()
