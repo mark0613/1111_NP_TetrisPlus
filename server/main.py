@@ -1,3 +1,4 @@
+from src.seeder import Seeder
 from src.instances import *
 from src.daemons import *
 import settings
@@ -36,6 +37,8 @@ class AllInstances(UserInstance, RoomListInstance):
 
 
 if __name__ == "__main__":
+    seeder = Seeder()
+    seeder.run()
     server = ThreadXMLRPCServer(('127.0.0.1', settings.SERVER_PORT), allow_none=True)
     server.register_instance(AllInstances())
 
