@@ -21,5 +21,5 @@ class UserModel(Base):
         self.username = username
         self.password = password
 
-
+Base.metadata.drop_all(settings.DB_ENGINE)
 Base.metadata.create_all(settings.DB_ENGINE)
