@@ -352,12 +352,22 @@ class EndPage(Ui_TetrisWindow):
 class RankPage(Ui_TetrisWindow):
     def bind(self):
         self.button_back_to_menu_in_rank.mousePressEvent = self.on_button_back_to_menu_click
-        # TODO: show rank info
+        self.show_single_rank()
+        self.show_connection_rank()
+    
+    def show_single_rank(self):
+        data = SERVER.get_all_records("single")
+        for row in data[-1::-1]:
+            add_list_item_multitext(self.list_single_rank, [row["user"], str(row["score"])])
+
+    def show_connection_rank(self):
+        data = SERVER.get_all_records("connection")
+        for row in data[-1::-1]:
+            add_list_item_multitext(self.list_connection_rank, [row["user"], str(row["score"])])
 
 class RulePage(Ui_TetrisWindow):
     def bind(self):
         self.button_back_to_menu_in_rule.mousePressEvent = self.on_button_back_to_menu_click
-        # TODO: show rule
 
 class RoomListPage(Ui_TetrisWindow):
     def bind(self):

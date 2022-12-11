@@ -1919,7 +1919,7 @@ background: rgb(180, 217, 217);
 }</string>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_single_rank">
        <attribute name="title">
@@ -1934,6 +1934,11 @@ background: rgb(180, 217, 217);
           <height>371</height>
          </rect>
         </property>
+        <property name="styleSheet">
+         <string notr="true">QListWidget {
+	background-color: #fff;
+}</string>
+        </property>
        </widget>
        <widget class="QListWidget" name="list_single_rank">
         <property name="geometry">
@@ -1943,6 +1948,11 @@ background: rgb(180, 217, 217);
           <width>361</width>
           <height>371</height>
          </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QListWidget {
+	background-color: #fff;
+}</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_record">
@@ -2050,6 +2060,11 @@ font: 25pt &quot;Microsoft JhengHei&quot;;</string>
           <width>711</width>
           <height>371</height>
          </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QListWidget {
+	background-color: #fff;
+}</string>
         </property>
        </widget>
       </widget>
@@ -2228,8 +2243,8 @@ font: 25pt &quot;Microsoft JhengHei&quot;;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
-     <height>18</height>
+     <width>792</width>
+     <height>25</height>
     </rect>
    </property>
   </widget>

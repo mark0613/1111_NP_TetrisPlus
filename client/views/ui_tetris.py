@@ -847,9 +847,15 @@ class Ui_TetrisWindow(object):
         self.tab_single_rank.setObjectName("tab_single_rank")
         self.list_record = QtWidgets.QListWidget(self.tab_single_rank)
         self.list_record.setGeometry(QtCore.QRect(10, 70, 371, 371))
+        self.list_record.setStyleSheet("QListWidget {\n"
+"    background-color: #fff;\n"
+"}")
         self.list_record.setObjectName("list_record")
         self.list_single_rank = QtWidgets.QListWidget(self.tab_single_rank)
         self.list_single_rank.setGeometry(QtCore.QRect(380, 70, 361, 371))
+        self.list_single_rank.setStyleSheet("QListWidget {\n"
+"    background-color: #fff;\n"
+"}")
         self.list_single_rank.setObjectName("list_single_rank")
         self.label_record = QtWidgets.QLabel(self.tab_single_rank)
         self.label_record.setGeometry(QtCore.QRect(30, 20, 311, 41))
@@ -898,6 +904,9 @@ class Ui_TetrisWindow(object):
         self.label_connection_rank.setObjectName("label_connection_rank")
         self.list_connection_rank = QtWidgets.QListWidget(self.tab_connection_rank)
         self.list_connection_rank.setGeometry(QtCore.QRect(20, 70, 711, 371))
+        self.list_connection_rank.setStyleSheet("QListWidget {\n"
+"    background-color: #fff;\n"
+"}")
         self.list_connection_rank.setObjectName("list_connection_rank")
         self.ranks.addTab(self.tab_connection_rank, "")
         self.button_back_to_menu_in_rank = QtWidgets.QPushButton(self.page_rank)
@@ -972,7 +981,7 @@ class Ui_TetrisWindow(object):
         self.pages.addWidget(self.page_room_list)
         TetrisWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(TetrisWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 18))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 792, 25))
         self.menubar.setObjectName("menubar")
         TetrisWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(TetrisWindow)
@@ -981,7 +990,7 @@ class Ui_TetrisWindow(object):
 
         self.retranslateUi(TetrisWindow)
         self.pages.setCurrentIndex(0)
-        self.ranks.setCurrentIndex(1)
+        self.ranks.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(TetrisWindow)
 
     def retranslateUi(self, TetrisWindow):

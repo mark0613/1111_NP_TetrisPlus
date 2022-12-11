@@ -42,6 +42,19 @@ def create_list_item(parent:QtWidgets.QListWidget, text: str):
     item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
     return item
 
+def add_list_item_multitext(parent: QtWidgets.QListWidget, texts: list):
+    item = QtWidgets.QListWidgetItem(parent)
+    layout = QtWidgets.QHBoxLayout()
+    for text in texts:
+        label = create_label(text, f"label_text_in_item")
+        label.setStyleSheet("QLabel { color: #fff; }")
+        layout.addWidget(label)
+    item_widget = QtWidgets.QWidget()
+    item_widget.setLayout(layout)
+    item.setSizeHint(item_widget.sizeHint())
+    parent.addItem(item)
+    parent.setItemWidget(item, item_widget)
+
 def add_list_item_contain_button(parent:QtWidgets.QListWidget, text: str, on_button_click):
     item = QtWidgets.QListWidgetItem(parent)
     room_id = text.split(" ")[0]
