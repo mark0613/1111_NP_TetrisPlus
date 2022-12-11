@@ -58,7 +58,6 @@ class GameDaemon:
     def receive_from_udp(self, signal):
         while self.is_running:
             msg, address = self.udp.receive_from()
-            print(len(msg))
             data = TetrisData.load_by_string(msg)
             signal(data)
     

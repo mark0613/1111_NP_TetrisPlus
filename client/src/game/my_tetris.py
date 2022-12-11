@@ -29,16 +29,17 @@ class MyTetris(Tetris):
         self.end_tasks = tasks
 
     def display(self):
-        self.show_score(self.score)
         next = TetrisSmallBlock("Next", self.next_piece.coords, self.next_piece.color)
         held = TetrisSmallBlock("Held", self.held_piece.coords, self.held_piece.color)
         board = TetrisBoardBlock("Board", self.board.copy(), self.current_piece.coords, self.current_piece.color)
         data = TetrisData(next, held, board)
+        data.score = self.score
         if self.send_data:
             self.send_data(str(data))
         return self.display_with(data)
 
     def display_with(self, data: TetrisData):
+        self.show_score(data.score)
         size = 6
         dx = -2
         dy = 2
