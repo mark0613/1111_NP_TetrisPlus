@@ -12,7 +12,7 @@ daemon = GameDaemon()
 class ThreadXMLRPCServer(ThreadingMixIn, SimpleXMLRPCServer):
 	pass
 
-class AllInstances(UserInstance, RoomListInstance):
+class AllInstances(UserInstance, RankInstance, RoomListInstance):
     def create_room(self, user):
         (result, room_id) = super().create_room(user)
         daemon.send_room_list()
