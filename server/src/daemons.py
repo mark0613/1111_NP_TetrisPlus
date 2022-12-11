@@ -16,6 +16,7 @@ class GameDaemon:
         self.group_address = "225.1.2.3"
         self.multicase_sender = MulticastSender()
         self.username_connection_map = {}
+        self.score_data = {}
         self.bind_ports()
     
     def bind_ports(self):
@@ -65,23 +66,12 @@ class GameDaemon:
             except:
                 pass
 
-    def send_game_winner(self, room_id):
-        """
-        data = {
-            "type" : "game_winner",
-            "info" : {
-                "p1" : {
-                    "username" : "",
-                    "score" : 100
-                },
-                "p2" : {
-                    # 同上
-                },
-                "winner" : "p1"
-            }
-        }
-        """
-        pass
+    def send_game_winner(self, room_id: str, data: dict):
+        members = self.room_list_service.get_room_members(room_id)
+        for m in members:
+            connection = self.username_connection_map[m]
+            msg = json.dumps(data)
+            connection.send(msg.encode("utf-8"))
 
     def receive_msg(self, socket):
         msg = None
@@ -89,6 +79,58 @@ class GameDaemon:
             msg = socket.recv(self.buf_size)
         return msg.decode("utf-8")
 
+    def handle_end_game(self, data):
+        def is_duplicate(info1: dict, info2: dict):
+            same_players = False
+            same_time = False
+            set1 = set(info1["players"].keys())
+            set2 = set(info2["players"].keys())
+            print(set1, set2)
+            if len(set1 | set2) == 2:
+                same_players = True
+            if info1["timestamp"] - info2["timestamp"] <= 30 * 1000:
+                same_time = True
+            return same_players and same_time
+        
+        def compare(p1: list, p2: list):
+            if p1[1] > p2[1]:
+                return -1
+            if p1[1] == p2[1]:
+                return 0
+            return 1
+
+        room_id = data["room_id"]
+        info = data["info"]
+        if room_id in self.score_data:
+            old_info = self.score_data[room_id]
+            if is_duplicate(info, old_info):
+                self.score_data.pop(room_id, None)
+                return
+        self.score_data[room_id] = info
+        p1 = []
+        p2 = []
+        idx = 0
+        for p, s in info["players"].items():
+            if idx == 0:
+                p1 = [p, s]
+            else:
+                p2 = [p, s]
+            idx += 1
+
+        winner = None
+        if compare(p1, p2) == 1:
+            winner = p2[0]
+        if compare(p1, p2) == -1:
+            winner = p1[0]
+        data = {
+            "type" : "game_winner",
+            "info" : {
+                "players" : info["players"],
+                "winner" : winner,
+            },
+        }
+        self.send_game_winner(room_id, data)
+        
     def run(self):
         output = []
         while self.is_running:
@@ -109,6 +151,8 @@ class GameDaemon:
                         if request["type"] == "my_username":
                             username = request["username"]
                             self.username_connection_map[username] = connection
+                        if request["type"] == "end_game":
+                            self.handle_end_game(request)
                     except ConnectionResetError:
                         for user, con in self.username_connection_map.items():
                             if con == connection:

@@ -64,9 +64,9 @@ class GameDaemon:
     def show_game_winner(self, data: dict):
         print(data)
 
-    def send_score(self, score):
-        pass
-        # TODO: RPC
+    def send_end_game(self, data: dict):
+        data = json.dumps(data)
+        self.client.send(data)
     
     def close(self):
         self.client.close()

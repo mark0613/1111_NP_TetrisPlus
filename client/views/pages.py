@@ -12,6 +12,7 @@ from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtCore import QThread
 import xmlrpc.client
 import threading
+import time
 
 
 IP = "127.0.0.1"
@@ -233,6 +234,9 @@ class RoomPage(Ui_TetrisWindow):
 
 class ConnectionGamePage(Ui_TetrisWindow):
     def play_connection_game(self):
+        self.label_player1_in_game.setText(self.username)
+        self.label_player2_in_game.setText(self.peer_name)
+
         my_port = int(self.my_connection_info.split(":")[1])
         p_ip, p_port = self.peer_connection_info.split(":")
         p_port = int(p_port)
@@ -240,11 +244,14 @@ class ConnectionGamePage(Ui_TetrisWindow):
 
         self.key_buffer = KeyBuffer()
         self.condition = threading.Condition()
-        my_game = MyTetris(20, self.daemon.send_game_board)
-        my_game.set_key_buffer(self.key_buffer)
-        my_game.set_condition(self.condition)
-        my_game.set_display_method(self.display_p1_next_block, self.display_p1_held_block, self.display_p1_board_block)
-        my_game.set_show_score_method(self.show_my_score_in_connection)
+        self.my_game = MyTetris(20, self.daemon.send_game_board)
+        self.my_game.set_key_buffer(self.key_buffer)
+        self.my_game.set_condition(self.condition)
+        self.my_game.set_display_method(self.display_p1_next_block, self.display_p1_held_block, self.display_p1_board_block)
+        self.my_game.set_show_score_method(self.show_my_score_in_connection)
+        self.my_game.set_end_game_tasks([
+            Task(self.end_game_in_connection),
+        ])
         
         peer_game = MyTetris(15)
         peer_game.set_display_method(self.display_p2_next_block, self.display_p2_held_block, self.display_p2_board_block)
@@ -263,10 +270,10 @@ class ConnectionGamePage(Ui_TetrisWindow):
         self.thread_timer.started.connect(self.task_timer.run)
         timer.wait([
             Task(self.thread_timer.terminate),
-            # Task(self.end_game_in_single),
+            Task(self.end_game_in_connection),
         ])
         
-        self.task_connection_game = LongTask(my_game.play)
+        self.task_connection_game = LongTask(self.my_game.play)
         self.thread_connection_game = QThread()
         self.task_connection_game.moveToThread(self.thread_connection_game)
         self.thread_connection_game.started.connect(self.task_connection_game.run)
@@ -306,9 +313,41 @@ class ConnectionGamePage(Ui_TetrisWindow):
     def show_time_in_connection(self, time: str):
         self.label_time_in_connection.setText(time)
 
+    def stop_all(self):
+        self.thread_connection_game.terminate()
+        self.thread_timer.terminate()
+        self.thread_udp.terminate()
+        self.my_game.is_gaming = False
+
+    def end_game_in_connection(self):
+        data = {
+            "type" : "end_game",
+            "room_id" : self.room_id,
+            "info" : {
+                "players" : {
+                    self.username : int(self.label_my_score_in_game.text()),
+                    self.peer_name : int(self.label_peer_score_in_game.text()),
+                },
+                "timestamp" : int(time.time())
+            }
+        }
+        self.daemon.send_end_game(data)
+        self.stop_all()
+
 class EndPage(Ui_TetrisWindow):
     def bind(self):
         self.button_to_rank_in_end.mousePressEvent = self.on_button_rank_click
+
+    def show_winner(self, data: dict):
+        change_page(self.pages, "page_connection_end")
+        self.stop_all()
+        winner = data["winner"]
+        if not winner:
+            winner = "--平手--"
+        self.label_winner_player.setText(winner)
+        s1 = data["players"][self.username]
+        s2 = data["players"][self.peer_name]
+        self.label_score_in_end.setText(f"{s1} vs {s2}")
 
 class RankPage(Ui_TetrisWindow):
     def bind(self):
@@ -332,6 +371,7 @@ class RoomListPage(Ui_TetrisWindow):
             self.room_id = room_id
     
     def join_room(self, room_id):
+        self.room_id = room_id
         result = SERVER.add_room(room_id, self.username)
         if result:
             change_page(self.pages, "page_connection_room")
