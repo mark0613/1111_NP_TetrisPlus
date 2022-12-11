@@ -18,4 +18,4 @@ DB_URL = f"mysql+pymysql://{DB_SETTINGS['user']}:{DB_SETTINGS['password']}@{DB_S
 DB_ENGINE = create_engine(DB_URL)
 DB_SESSION = sessionmaker(autocommit=False, autoflush=False, bind=DB_ENGINE)
 
-SERVER_PORT = os.getenv("SERVER_PORT")
+SERVER_PORT = int(os.getenv("SERVER_PORT"))

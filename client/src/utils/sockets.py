@@ -1,23 +1,47 @@
-import binascii
-import hashlib
-import random
-import string
-import select
 import socket
 import struct
 
-LOWER = string.ascii_lowercase
-UPPER = string.ascii_uppercase
-DIGITS = string.digits
 
-def get_random_string(length: int=1):
-    sequence = LOWER + UPPER + DIGITS
-    result = ""
-    if length < 1:
-        length = 1
-    for i in range(length):
-        result += random.choice(sequence)
-    return result
+class TcpSocket:
+    def __init__(self, type="s"):
+        self.backlog = 5
+        self.buf_size = 1024
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        if type == "s":
+            self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        
+    def send(self, data: str):
+        self.socket.send(data.encode("utf-8"))
+    
+    def receive(self):
+        return self.socket.recv(self.buf_size).decode("utf-8")
+    
+    def close(self) -> str:
+        self.socket.close()
+
+class TcpServer(TcpSocket):
+    def __init__(self):
+        super().__init__("s")
+    
+    def accept(self, port: int):
+        self.socket.bind(('', port))
+        self.socket.listen(self.backlog)
+        self.client, (remote_ip, remote_port) = self.socket.accept()
+    
+    def send(self, data: str):
+        self.client.send(data.encode("utf-8"))
+    
+    def receive(self) -> str:
+        return self.client.recv(self.buf_size).decode("utf-8")
+
+class TcpClient(TcpSocket):
+    def __init__(self):
+        super().__init__("c")
+    
+    def connect(self, address: tuple):
+        ip, port = address
+        port = int(port)
+        self.socket.connect((ip, port))
 
 class UdpSocket:
     def __init__(self):
@@ -60,16 +84,3 @@ class MulticastReceiver(UdpSocket):
         group = socket.inet_aton(group_ip)
         mreq = struct.pack('4sL', group, socket.INADDR_ANY)
         self.socket.setsockopt(socket.IPPROTO_IP, socket.IP_DROP_MEMBERSHIP, mreq)
-
-class PasswordEncoder:
-    def encode(password, salt=None):
-        if salt is None:
-            salt = get_random_string(4)
-        password_hash = hashlib.pbkdf2_hmac('sha256', password.encode(), salt.encode(), 100000)
-        salt_str = binascii.hexlify(salt).decode()
-        password_hash_str = binascii.hexlify(password_hash).decode()
-        return salt_str, password_hash_str
-
-    def verify(password, salt, password_hash):
-        my_hash = hashlib.pbkdf2_hmac('sha256', password.encode(), salt.encode(), 100000)
-        return my_hash == password_hash

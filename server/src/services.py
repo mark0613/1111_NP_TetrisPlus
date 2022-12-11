@@ -48,8 +48,12 @@ class RoomListService:
         return True
     
     def quit_room(self, user):
-        if self.user_in_room(user):
+        room_id = self.user_in_room(user)
+        if room_id:
             self.room_list_dao.quit(user)
+            members = self.get_room_members(room_id)
+            if len(members) == 0:
+                self.destroy_room(room_id)
             return True
         return False
     

@@ -1256,9 +1256,6 @@ font: 17pt &quot;Consolas&quot;;</string>
       <property name="text">
        <string/>
       </property>
-      <property name="pixmap">
-       <pixmap>../static/block1.png</pixmap>
-      </property>
       <property name="scaledContents">
        <bool>true</bool>
       </property>
@@ -1286,9 +1283,6 @@ font: 17pt &quot;Consolas&quot;;</string>
       <property name="text">
        <string/>
       </property>
-      <property name="pixmap">
-       <pixmap>../static/block2.png</pixmap>
-      </property>
       <property name="scaledContents">
        <bool>true</bool>
       </property>
@@ -1313,10 +1307,6 @@ font: 17pt &quot;Consolas&quot;;</string>
       </property>
       <property name="text">
        <string/>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>../static/home.png</normaloff>../static/home.png</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -2082,10 +2072,6 @@ font: 25pt &quot;Microsoft JhengHei&quot;;</string>
       <property name="text">
        <string/>
       </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>../static/home.png</normaloff>../static/home.png</iconset>
-      </property>
       <property name="iconSize">
        <size>
         <width>30</width>
@@ -2146,6 +2132,22 @@ font: 25pt &quot;Microsoft JhengHei&quot;;</string>
        <string>&lt;</string>
       </property>
      </widget>
+     <widget class="QLabel" name="img_rule">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>130</y>
+        <width>741</width>
+        <height>341</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="page_room_list">
      <widget class="QPushButton" name="button_create_room">
@@ -2179,6 +2181,11 @@ border-radius: 7px;</string>
         <width>741</width>
         <height>341</height>
        </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QListWidget {
+	background-color: #fff;
+}</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_room_list">
@@ -2221,7 +2228,7 @@ font: 25pt &quot;Microsoft JhengHei&quot;;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>792</width>
+     <width>800</width>
      <height>18</height>
     </rect>
    </property>

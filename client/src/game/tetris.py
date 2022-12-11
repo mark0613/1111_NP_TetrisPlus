@@ -1,12 +1,9 @@
-from src.socket.data_format import *
 from .config import *
-from .keyboard import KeyBuffer
 
 from enum import Enum
 import cv2
 import numpy as np
 import random
-import threading
 
 
 class PieceType(Enum):
@@ -59,10 +56,9 @@ class TetrisCommand(Enum):
         return TetrisCommand.OTHER
 
 class Tetris:
-    key_buffer = None
-    condition = None
     def __init__(self, ratio: int=20):
         self.ratio = ratio
+        self.level = 2
         self.score = 0
         self.piece_code = [piece for piece in PieceType]
         self.piece_color = {
@@ -86,18 +82,6 @@ class Tetris:
         self.current_piece = None
         self.held_piece = None
         self.next_piece = None
-
-        self.next_display_method = cv2.imshow
-        self.held_display_method = cv2.imshow
-        self.board_display_method = cv2.imshow
-
-    @classmethod
-    def set_key_buffer(cls, key_buffer: KeyBuffer):
-        Tetris.key_buffer = key_buffer
-
-    @classmethod
-    def set_condition(cls, condition: threading.Condition):
-        Tetris.condition = condition
 
     def get_random_piece_type(self) -> PieceType:
         return random.choice(self.piece_code)
@@ -139,69 +123,32 @@ class Tetris:
             self.current_piece_type = self.next_piece_type
             self.next_piece_type = self.get_random_piece_type()
 
-    def display(self):
-        data_set = {
-            "next" : {
-                "title" : "Next",
-                "coords" : self.next_piece.coords,
-                "color" : self.next_piece.color,
-                "display_method" : self.next_display_method
-            },
-            "held" : {
-                "title" : "Held",
-                "coords" : self.held_piece.coords,
-                "color" : self.held_piece.color,
-                "display_method" : self.held_display_method
-            },
-            "board" : {
-                "title" : "Board",
-                "src" : self.board.copy(),
-                "coords" : self.current_piece.coords,
-                "color" : self.current_piece.color,
-                "display_method" : self.board_display_method
-            },
-        }
-        return Tetris.displayWith(data_set, self.ratio)
+    def enlarge(self, array: np.ndarray, ratio: int =-1):
+        if ratio < 0:
+            ratio = self.ratio
+        return array.repeat(ratio, 0).repeat(ratio, 1)
 
-    @classmethod
-    def displayWith(cls, data_set: dict, ratio: int):
-        def enlarge(array: np.ndarray):
-            return array.repeat(ratio, 0).repeat(ratio, 1)
-        
+    def display(self):
         size = 6
         dx = -2
         dy = 2
-        next = data_set["next"]
-        next_coords, next_color = next["coords"], next["color"].value
-        next_display_method = next["display_method"]
+
         next_block = np.zeros((size, size, 3), dtype=np.uint8)
-        next_block[next_coords[:, 0] + dy, next_coords[:, 1] + dx] = next_color
-        next_block = enlarge(next_block)
+        next_block[self.next_piece.coords[:, 0] + dy, self.next_piece.coords[:, 1] + dx] = self.next_piece.color.value
+        next_block = self.enlarge(next_block)
 
-        held = data_set["held"]
-        held_coords, held_color = held["coords"], held["color"].value
-        held_display_method = held["display_method"]
         held_block = np.zeros((size, size, 3), dtype=np.uint8)
-        held_block[held_coords[:, 0] + dy, held_coords[:, 1] + dx] = held_color
-        held_block = enlarge(held_block)
+        held_block[self.held_piece.coords[:, 0] + dy, self.held_piece.coords[:, 1] + dx] = self.held_piece.color.value
+        held_block = self.enlarge(held_block)
 
-        board = data_set["board"]
-        board_coords, board_color = board["coords"], board["color"].value
-        board_block = board["src"]
-        board_display_method = board["display_method"]
-        board_block[board_coords[:, 0], board_coords[:, 1]] = board_color
-        board_block = enlarge(board_block)
+        board_block = self.board.copy()
+        board_block[self.current_piece.coords[:, 0], self.current_piece.coords[:, 1]] = self.current_piece.color.value
+        board_block = self.enlarge(board_block)
 
-        next_display_method(next["title"], next_block)
-        held_display_method(held["title"], held_block)
-        board_display_method(board["title"], board_block)
-
-        with Tetris.condition:
-            Tetris.condition.wait(0.4)
-        key = Tetris.key_buffer.get()
-        print(key)
-        return key
-        # return cv2.waitKey(400)
+        cv2.imshow("Next", next_block)
+        cv2.imshow("Held", held_block)
+        cv2.imshow("Board", board_block)
+        return cv2.waitKey(1000 / self.level)
 
     def on_listen_key(self, key: int):
         coords = self.current_piece.coords
@@ -221,15 +168,15 @@ class Tetris:
         elif key is TetrisCommand.ROTATE:
             if not (self.current_piece_type is PieceType.I) and not(self.current_piece_type is PieceType.O):
                 if coords[1,1] > 0 and coords[1,1] < 9:
-                    arr = coords[1] - 1 + np.array([[[x, y] for y in range(3)] for x in range(3)])
-                    pov = coords - coords[1] + 1
+                    self.arr = coords[1] - 1 + np.array([[[x, y] for y in range(3)] for x in range(3)])
+                    self.pov = coords - coords[1] + 1
             elif self.current_piece_type is PieceType.I:
-                arr = self.top_left + np.array([[[x, y] for y in range(4)] for x in range(4)])
-                pov = np.array([np.where(np.logical_and(arr[:,:,0] == pos[0], arr[:,:,1] == pos[1])) for pos in coords])
-                pov = np.array([k[0] for k in np.swapaxes(pov, 1, 2)])
+                self.arr = self.top_left + np.array([[[x, y] for y in range(4)] for x in range(4)])
+                self.pov = np.array([np.where(np.logical_and(self.arr[:,:,0] == pos[0], self.arr[:,:,1] == pos[1])) for pos in coords])
+                self.pov = np.array([k[0] for k in np.swapaxes(self.pov, 1, 2)])
             if not (self.current_piece_type is PieceType.O):
-                arr = np.rot90(arr, -1)
-                coords = arr[pov[:,0], pov[:,1]]
+                self.arr = np.rot90(self.arr, -1)
+                coords = self.arr[self.pov[:,0], self.pov[:,1]]
             self.current_piece.coords = coords
         
         elif key is TetrisCommand.HARD_DROP:
@@ -323,6 +270,10 @@ class Tetris:
                     self.top_left[0] += 1
             
             self.eliminate()
+        self.end_game()
+
+    def end_game(self):
+        cv2.destroyAllWindows()
 
 
 if __name__ == "__main__":
