@@ -18,6 +18,25 @@ class UserInstance:
         user = UserModel(username, password)
         return self.user_service.login(user)
 
+class RankInstance:
+    user_service = UserService()
+    rank_service = RankService()
+
+    def update_score(self, username, mode, score):
+        user = self.user_service.get_user_by_username(username)
+        self.rank_service.update_score(user, mode, score)
+    
+    def get_all_records(self, mode):
+        records = self.rank_service.get_all_records(mode)
+        result = []
+        for record in records:
+            result.append({
+                "user" : record.user.username,
+                "score" : record.score,
+            })
+        result.sort(key=lambda r: r["score"])
+        return result
+
 class RoomListInstance:
     room_list_service = RoomListService()
 

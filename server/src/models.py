@@ -1,10 +1,11 @@
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import (
     Column,
-
+    ForeignKey,
     Integer,
     String,
 )
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
 
 import settings
 
@@ -21,5 +22,19 @@ class UserModel(Base):
         self.username = username
         self.password = password
 
-Base.metadata.drop_all(settings.DB_ENGINE)
+class RankModel(Base):
+    __tablename__ = "rank"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(Integer, ForeignKey("user.id"))
+    mode = Column(String(10), nullable=False)
+    score = Column(Integer, nullable=False)
+    
+    user = relationship("UserModel")
+
+    def __init__(self, user: UserModel, mode: str):
+        self.user = user
+        self.mode = mode
+        self.score = 0
+
+# Base.metadata.drop_all(settings.DB_ENGINE)
 Base.metadata.create_all(settings.DB_ENGINE)

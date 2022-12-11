@@ -16,6 +16,42 @@ class UserDao:
         session.add(user)
         session.commit()
 
+class RankDao:
+    def save(self, rank_record: RankModel):
+        session.add(rank_record)
+        session.commit()
+
+    def update_score(self, rank_record: RankModel, score: int):
+        session.query(RankModel).filter(
+            RankModel.id == rank_record.id
+        ).update({
+            "score" : score
+        })
+        session.commit()
+
+    def add_score(self, rank_record: RankModel, score: int):
+        session.query(RankModel).filter(
+            RankModel.id == rank_record.id
+        ).update({
+            "score" : RankModel.score + score
+        })
+        session.commit()
+    
+    def find_by_user(self, user: UserModel):
+        return session.query(RankModel).filter(RankModel.user_id==user.id).all()
+    
+    def find_by_user_and_mode(self, user: UserModel, mode: str):
+        return session.query(RankModel).filter(
+            RankModel.user_id == user.id,
+            RankModel.mode == mode
+        ).first()
+
+    def find_all(self):
+        return session.query(RankModel).all()
+    
+    def find_all_by_mode(self, mode: str):
+        return session.query(RankModel).filter(RankModel.mode==mode).all()
+
 class RoomListDao:
     def create(self, user):
         return RoomList.create(user)

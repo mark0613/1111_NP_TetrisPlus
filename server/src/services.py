@@ -27,6 +27,31 @@ class UserService:
         hash = user_data.password
         return self.password_encoder.verify(user.password, hash)
 
+class RankService:
+    rank_dao = RankDao()
+
+    def update_score(self, user: UserModel, mode: str, score: int):
+        record = self.get_user_record(user, mode)
+        if record is None:
+            record = RankModel(user, mode)
+            self.rank_dao.save(record)
+        
+        if mode == "single":
+            if score > record.score:
+                self.rank_dao.update_score(record, score)
+        if mode == "connection":
+            self.rank_dao.add_score(record, score)
+
+    def get_user_record(self, user: UserModel, mode: str=None):
+        if mode:
+            return self.rank_dao.find_by_user_and_mode(user, mode)
+        return self.rank_dao.find_by_user(user)
+    
+    def get_all_records(self, mode: str=None):
+        if mode:
+            return self.rank_dao.find_all_by_mode(mode)
+        return self.rank_dao.find_all()
+
 class RoomListService:
     room_list_dao = RoomListDao()
 
