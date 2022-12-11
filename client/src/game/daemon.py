@@ -77,7 +77,9 @@ class TimerDaemon:
     
     def run(self, show=print):
         while self.seconds >= 0:
-            text = f"{self.seconds//60}:{self.seconds%60}"
+            mm = str(self.seconds // 60).zfill(2)
+            ss = str(self.seconds % 60).zfill(2)
+            text = f"{mm}:{ss}"
             show(text)
             self.seconds -= 1
             time.sleep(1)
