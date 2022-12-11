@@ -48,11 +48,15 @@ class TetrisData:
         self.next = next
         self.held = held
         self.board = board
+        self.score = 0
     
     def __str__(self) -> str:
         data = self.__dict__.copy()
         for k, v in data.items():
-            data[k] = v.get_json_data("transport")
+            try:
+                data[k] = v.get_json_data("transport")
+            except AttributeError:
+                pass
         data.pop("data", None)
         return json.dumps(data)
 
@@ -69,4 +73,8 @@ class TetrisData:
         data["next"] = TetrisSmallBlock.load_by_transport_format(**data["next"])
         data["held"] = TetrisSmallBlock.load_by_transport_format(**data["held"])
         data["board"] = TetrisBoardBlock.load_by_transport_format(**data["board"])
-        return TetrisData(**data)
+        score = data["score"]
+        data.pop("score", None)
+        t = TetrisData(**data)
+        t.score = score
+        return t
