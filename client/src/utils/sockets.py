@@ -49,7 +49,7 @@ class UdpSocket:
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     
     def bind(self, port):
-        self.socket.bind(('', port))
+        self.socket.bind(('localhost', port))
 
     def send_to(self, data: str, address: tuple):
         ip, port = address
