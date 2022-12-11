@@ -244,17 +244,34 @@ class ConnectionGamePage(Ui_TetrisWindow):
         my_game.set_key_buffer(self.key_buffer)
         my_game.set_condition(self.condition)
         my_game.set_display_method(self.display_p1_next_block, self.display_p1_held_block, self.display_p1_board_block)
+        my_game.set_show_score_method(self.show_my_score_in_connection)
         
         peer_game = MyTetris(15)
         peer_game.set_display_method(self.display_p2_next_block, self.display_p2_held_block, self.display_p2_board_block)
+        peer_game.set_show_score_method(self.show_peer_score_in_connection)
+
         self.task_udp = LongTask(self.daemon.receive_from_udp, (peer_game.display_with, ))
         self.thread_udp = QThread()
         self.task_udp.moveToThread(self.thread_udp)
         self.thread_udp.started.connect(self.task_udp.run)
         self.thread_udp.start()
 
-        t = threading.Thread(target=my_game.play)
-        t.start()
+        timer = TimerDaemon(120)
+        self.thread_timer = QThread()
+        self.task_timer = LongTask(timer.run, (self.show_time_in_connection, ))
+        self.task_timer.moveToThread(self.thread_timer)
+        self.thread_timer.started.connect(self.task_timer.run)
+        timer.wait([
+            Task(self.thread_timer.terminate),
+            # Task(self.end_game_in_single),
+        ])
+        
+        self.task_connection_game = LongTask(my_game.play)
+        self.thread_connection_game = QThread()
+        self.task_connection_game.moveToThread(self.thread_connection_game)
+        self.thread_connection_game.started.connect(self.task_connection_game.run)
+        self.thread_timer.start()
+        self.thread_connection_game.start()
     
     def display_p1_next_block(self, title, img):
         qimg = cv2_to_qimage(img)
@@ -279,6 +296,15 @@ class ConnectionGamePage(Ui_TetrisWindow):
     def display_p2_board_block(self, title, img):
         qimg = cv2_to_qimage(img)
         self.img_peer_board_in_connection.setPixmap(QtGui.QPixmap.fromImage(qimg))
+    
+    def show_my_score_in_connection(self, score: int):
+        self.label_my_score_in_game.setText(str(score))
+
+    def show_peer_score_in_connection(self, score: int):
+        self.label_peer_score_in_game.setText(str(score))
+
+    def show_time_in_connection(self, time: str):
+        self.label_time_in_connection.setText(time)
 
 class EndPage(Ui_TetrisWindow):
     def bind(self):
