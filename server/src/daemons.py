@@ -6,7 +6,9 @@ import select
 
 
 class GameDaemon:
+    user_service = UserService()
     room_list_service = RoomListService()
+    rank_service = RankService()
 
     def __init__(self):
         self.is_running = True
@@ -86,7 +88,6 @@ class GameDaemon:
             same_time = False
             set1 = set(info1["players"].keys())
             set2 = set(info2["players"].keys())
-            print(set1, set2)
             if len(set1 | set2) == 2:
                 same_players = True
             if info1["timestamp"] - info2["timestamp"] <= 30 * 1000:
@@ -121,8 +122,12 @@ class GameDaemon:
         winner = None
         if compare(p1, p2) == 1:
             winner = p2[0]
+            user = self.user_service.get_user_by_username(p2[0])
+            self.rank_service.update_score(user, "connection", 50)
         if compare(p1, p2) == -1:
             winner = p1[0]
+            user = self.user_service.get_user_by_username(p1[0])
+            self.rank_service.update_score(user, "connection", -50)
         data = {
             "type" : "game_winner",
             "info" : {
