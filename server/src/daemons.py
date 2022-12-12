@@ -75,6 +75,7 @@ class GameDaemon:
             connection = self.username_connection_map[m]
             msg = json.dumps(data)
             connection.send(msg.encode("utf-8"))
+        self.room_list_service.quit_room(members[0])
 
     def receive_msg(self, socket):
         msg = None
