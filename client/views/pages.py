@@ -5,9 +5,11 @@ from src.game.keyboard import KeyBuffer
 from src.game.my_tetris import MyTetris
 from src.utils.config import *
 from src.utils.file import *
+from src.utils.record import *
 from src.utils.sockets import *
 from src.utils.tasks import Task
 
+from datetime import datetime
 from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtCore import QThread
 import xmlrpc.client
@@ -203,6 +205,14 @@ class SingleGamePage(Ui_TetrisWindow):
     def end_game_in_single(self):
         change_page(self.pages, "page_rank")
         self.thread_single_game.terminate()
+        self.record = load_record()
+        new_record = {
+            "score": int(self.label_my_score_in_single.text()),
+            "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        }
+        self.record.append(new_record)
+        save_record(self.record)
+        self.ranks.setCurrentIndex(0)
 
 class RoomPage(Ui_TetrisWindow):
     def bind(self):
@@ -348,13 +358,21 @@ class EndPage(Ui_TetrisWindow):
         s1 = data["players"][self.username]
         s2 = data["players"][self.peer_name]
         self.label_score_in_end.setText(f"{s1} vs {s2}")
+        self.ranks.setCurrentIndex(1)
 
 class RankPage(Ui_TetrisWindow):
     def bind(self):
         self.button_back_to_menu_in_rank.mousePressEvent = self.on_button_back_to_menu_click
+        self.show_single_record()
         self.show_single_rank()
         self.show_connection_rank()
     
+    def show_single_record(self):
+        self.record = load_record()
+        data = self.records
+        for row in data[-1::-1]:
+            add_list_item_multitext(self.list_record, [str(row["score"]), row["time"]])
+
     def show_single_rank(self):
         data = SERVER.get_all_records("single")
         for row in data[-1::-1]:

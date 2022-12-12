@@ -33,8 +33,8 @@ class MainWindow(QtWidgets.QMainWindow, *PAGE_CLASSES):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
-        self.bind()
         self.load_data()
+        self.bind()
         
         self.img1.setPixmap(QtGui.QPixmap(f"{settings.STATIC_DIR}/block1.png"))
         self.img2.setPixmap(QtGui.QPixmap(f"{settings.STATIC_DIR}/block2.png"))
@@ -60,7 +60,8 @@ class MainWindow(QtWidgets.QMainWindow, *PAGE_CLASSES):
 
     def load_data(self):
         self.config = load_config()
-        self.record = load_record()
+        self.records = load_record()
+        self.records.sort(key=lambda r: r["score"])
 
     def start_daemon(self):
         def show_tcp_data(data: dict):
