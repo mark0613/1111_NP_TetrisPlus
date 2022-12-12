@@ -144,6 +144,7 @@ class SettingsPage(Ui_TetrisWindow):
         }
         save_config(config)
         open_window("儲存成功!")
+        self.load_data()
         change_page(self.pages, "page_single")
     
     def on_button_back_to_single_click(self, event):
