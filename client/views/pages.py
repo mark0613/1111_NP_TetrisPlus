@@ -105,6 +105,7 @@ class MenuPage(Ui_TetrisWindow):
     
     def on_button_rank_click(self, event):
         change_page(self.pages, "page_rank")
+        self.show_all_rank()
 
     def on_button_rule_click(self, event):
         change_page(self.pages, "page_rule")
@@ -363,23 +364,28 @@ class EndPage(Ui_TetrisWindow):
 class RankPage(Ui_TetrisWindow):
     def bind(self):
         self.button_back_to_menu_in_rank.mousePressEvent = self.on_button_back_to_menu_click
+        
+    def show_all_rank(self):
         self.show_single_record()
         self.show_single_rank()
         self.show_connection_rank()
-    
+
     def show_single_record(self):
-        self.record = load_record()
+        self.records = load_record()
+        self.list_record.clear()
         data = self.records
         for row in data[-1::-1]:
             add_list_item_multitext(self.list_record, [str(row["score"]), row["time"]])
 
     def show_single_rank(self):
         data = SERVER.get_all_records("single")
+        self.list_single_rank.clear()
         for row in data[-1::-1]:
             add_list_item_multitext(self.list_single_rank, [row["user"], str(row["score"])])
 
     def show_connection_rank(self):
         data = SERVER.get_all_records("connection")
+        self.list_connection_rank.clear()
         for row in data[-1::-1]:
             add_list_item_multitext(self.list_connection_rank, [row["user"], str(row["score"])])
 

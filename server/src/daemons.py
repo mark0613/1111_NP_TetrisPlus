@@ -119,15 +119,17 @@ class GameDaemon:
                 p2 = [p, s]
             idx += 1
 
+        user1 = self.user_service.get_user_by_username(p1[0])
+        user2 = self.user_service.get_user_by_username(p2[0])
         winner = None
         if compare(p1, p2) == 1:
             winner = p2[0]
-            user = self.user_service.get_user_by_username(p2[0])
-            self.rank_service.update_score(user, "connection", 50)
+            self.rank_service.update_score(user1, "connection", -50)
+            self.rank_service.update_score(user2, "connection", 50)
         if compare(p1, p2) == -1:
             winner = p1[0]
-            user = self.user_service.get_user_by_username(p1[0])
-            self.rank_service.update_score(user, "connection", -50)
+            self.rank_service.update_score(user1, "connection", 50)
+            self.rank_service.update_score(user2, "connection", -50)
         data = {
             "type" : "game_winner",
             "info" : {
